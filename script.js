@@ -125,13 +125,7 @@
   const core4 = makeGlowSphere(1.75, 0x00d4ff, 0.04); // subtle fringe
   globeGroup.add(core1, core2, core3, core4);
 
-  /* Tiny bright centre point */
-  const centerGeo = new THREE.SphereGeometry(0.12, 16, 16);
-  const centerMat = new THREE.MeshBasicMaterial({
-    color: 0xffffff, transparent: true, opacity: 0.9,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-  });
-  globeGroup.add(new THREE.Mesh(centerGeo, centerMat));
+
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      3. ORBITING ENERGY RINGS
@@ -253,8 +247,8 @@
   /* Drag: accumulate velocity directly from delta pixels */
   window.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
-    velY += (e.clientX - prevMX) * 0.04;   // strong drag factor
-    velX += (e.clientY - prevMY) * 0.04;
+    velY += (e.clientX - prevMX) * 0.018;  // gentler drag
+    velX += (e.clientY - prevMY) * 0.018;
     prevMX = e.clientX;
     prevMY = e.clientY;
   });
@@ -289,8 +283,8 @@
      9. ANIMATION LOOP
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   const clock  = new THREE.Clock();
-  const DAMPING = 0.88;   // momentum decay per frame (lower = stops faster)
-  const LERP    = 0.22;   // single-step lerp — high = snappy
+  const DAMPING = 0.90;  // momentum decay
+  const LERP    = 0.08;  // smooth, not twitchy
 
   function animate() {
     requestAnimationFrame(animate);
@@ -303,18 +297,16 @@
       velX *= DAMPING;
       velY *= DAMPING;
     } else {
-      /* HOVER MODE — globe snaps directly to mouse position */
-      const targetX =  mouseNY * 1.4;  // up/down tilt — strong
-      const targetY =  mouseNX * 2.2;  // left/right tilt — very strong
+      /* HOVER MODE — globe tilts gently toward mouse */
+      const targetX =  mouseNY * 0.5;  // subtle up/down
+      const targetY =  mouseNX * 0.8;  // subtle left/right
       globeGroup.rotation.x += (targetX - globeGroup.rotation.x) * LERP;
       globeGroup.rotation.y += (targetY - globeGroup.rotation.y) * LERP;
 
-      /* Drain leftover drag momentum */
       velX *= DAMPING;
       velY *= DAMPING;
 
-      /* Auto-spin only when mouse is idle (stops fighting hover) */
-      if (!mouseActive) globeGroup.rotation.y += 0.003;
+      if (!mouseActive) globeGroup.rotation.y += 0.0018;
     }
 
     /* --- Rings counter-rotate --- */
