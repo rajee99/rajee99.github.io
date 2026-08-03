@@ -226,17 +226,20 @@
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      7. MOUSE — direct rotation + momentum
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  let mouseNX = 0, mouseNY = 0;        // normalised -1…1
-  let targetRotX = 0, targetRotY = 0;  // target euler
-  let velX = 0, velY = 0;              // momentum velocity
+  let mouseNX = 0, mouseNY = 0;  // normalised -1…1
+  let velX = 0, velY = 0;        // spin momentum (radians/frame)
   let isDragging = false, prevMX = 0, prevMY = 0;
+  let mouseActive = false, mouseTimer = null;
 
-  /* Normalised mouse position over the HERO section */
   const heroSection = document.getElementById('hero');
+
   heroSection.addEventListener('mousemove', (e) => {
     const rect = heroSection.getBoundingClientRect();
-    mouseNX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+    mouseNX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2; // -1…1
     mouseNY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+    mouseActive = true;
+    clearTimeout(mouseTimer);
+    mouseTimer = setTimeout(() => { mouseActive = false; }, 300);
   });
 
   heroSection.addEventListener('mousedown', (e) => {
@@ -244,21 +247,19 @@
     prevMX = e.clientX; prevMY = e.clientY;
     velX = 0; velY = 0;
   });
+  window.addEventListener('mouseup',    () => { isDragging = false; });
+  window.addEventListener('mouseleave', () => { isDragging = false; });
 
-  window.addEventListener('mouseup',   () => { isDragging = false; });
-  window.addEventListener('mouseleave',() => { isDragging = false; });
-
+  /* Drag: accumulate velocity directly from delta pixels */
   window.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
-    const dx = e.clientX - prevMX;
-    const dy = e.clientY - prevMY;
-    velY += dx * 0.012;
-    velX += dy * 0.012;
+    velY += (e.clientX - prevMX) * 0.04;   // strong drag factor
+    velX += (e.clientY - prevMY) * 0.04;
     prevMX = e.clientX;
     prevMY = e.clientY;
   });
 
-  /* Touch support */
+  /* Touch */
   let lastTX = 0, lastTY = 0;
   heroSection.addEventListener('touchstart', e => {
     lastTX = e.touches[0].clientX;
@@ -266,13 +267,12 @@
     velX = 0; velY = 0;
   }, {passive:true});
   heroSection.addEventListener('touchmove', e => {
-    const dx = e.touches[0].clientX - lastTX;
-    const dy = e.touches[0].clientY - lastTY;
-    velY += dx * 0.015;
-    velX += dy * 0.015;
+    velY += (e.touches[0].clientX - lastTX) * 0.05;
+    velX += (e.touches[0].clientY - lastTY) * 0.05;
     lastTX = e.touches[0].clientX;
     lastTY = e.touches[0].clientY;
   }, {passive:true});
+
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      8. RESIZE
@@ -288,31 +288,34 @@
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      9. ANIMATION LOOP
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  const clock = new THREE.Clock();
-  const DAMPING  = 0.92;  // momentum decay
-  const LERP     = 0.10;  // rotation smoothing
+  const clock  = new THREE.Clock();
+  const DAMPING = 0.88;   // momentum decay per frame (lower = stops faster)
+  const LERP    = 0.22;   // single-step lerp — high = snappy
 
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    /* --- Mouse-driven target rotation --- */
-    if (!isDragging) {
-      /* Hover: globe tilts strongly toward mouse */
-      targetRotX += (mouseNY * 0.6 - targetRotX) * 0.05;
-      targetRotY += (mouseNX * 1.2 - targetRotY) * 0.05;
-
-      /* Apply momentum, then decay */
+    if (isDragging) {
+      /* DRAG MODE — apply accumulated velocity directly, no lerp lag */
+      globeGroup.rotation.x += velX;
+      globeGroup.rotation.y += velY;
       velX *= DAMPING;
       velY *= DAMPING;
+    } else {
+      /* HOVER MODE — globe snaps directly to mouse position */
+      const targetX =  mouseNY * 1.4;  // up/down tilt — strong
+      const targetY =  mouseNX * 2.2;  // left/right tilt — very strong
+      globeGroup.rotation.x += (targetX - globeGroup.rotation.x) * LERP;
+      globeGroup.rotation.y += (targetY - globeGroup.rotation.y) * LERP;
+
+      /* Drain leftover drag momentum */
+      velX *= DAMPING;
+      velY *= DAMPING;
+
+      /* Auto-spin only when mouse is idle (stops fighting hover) */
+      if (!mouseActive) globeGroup.rotation.y += 0.003;
     }
-
-    /* Smooth current rotation toward target + momentum */
-    globeGroup.rotation.x += (targetRotX - globeGroup.rotation.x) * LERP + velX * 0.05;
-    globeGroup.rotation.y += (targetRotY - globeGroup.rotation.y) * LERP + velY * 0.05;
-
-    /* Slow auto-spin around Y when mouse is not moving */
-    globeGroup.rotation.y += 0.0012;
 
     /* --- Rings counter-rotate --- */
     ring1.rotation.y  = t * 0.18;
