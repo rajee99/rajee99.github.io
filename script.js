@@ -4,24 +4,34 @@
    ============================================================ */
 
 /* ================================================================
-   THREE.JS 3D HERO SCENE
-   - Rotating particle globe (4000 points on sphere surface)
-   - Orbiting particle rings
-   - Nebula starfield background
-   - Mouse parallax camera movement
-   - Floating geometric wireframe
+   THREE.JS 3D HERO SCENE — ENHANCED
+   - 6000-particle globe with Fibonacci distribution
+   - Direct mouse-driven globe rotation (not camera shift)
+   - Momentum / inertia after mouse leaves
+   - Glowing inner core spheres (layered bloom)
+   - Mouse-proximity particle repulsion
+   - Click → shockwave ripple
+   - Orbiting energy rings
+   - Dynamic color cycling
    ================================================================ */
 (function initThreeJS() {
   const container = document.getElementById('hero-canvas');
-  if (!container || typeof THREE === 'undefined') return;
+  if (!container) return;
 
-  /* --- SCENE SETUP --- */
-  const W = container.clientWidth  || window.innerWidth;
-  const H = container.clientHeight || window.innerHeight;
+  /* Poll until THREE is available (it loads async at bottom of body) */
+  if (typeof THREE === 'undefined') {
+    setTimeout(initThreeJS, 100);
+    return;
+  }
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 2000);
-  camera.position.set(0, 0, 5);
+  /* --- SIZES --- */
+  let W = container.clientWidth  || window.innerWidth;
+  let H = container.clientHeight || window.innerHeight;
+
+  /* --- SCENE --- */
+  const scene    = new THREE.Scene();
+  const camera   = new THREE.PerspectiveCamera(55, W / H, 0.01, 1000);
+  camera.position.set(0, 0, 4.8);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -29,205 +39,324 @@
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  /* --- COLORS --- */
-  const COLOR_CYAN   = new THREE.Color(0x00d4ff);
-  const COLOR_PURPLE = new THREE.Color(0x7c3aed);
-  const COLOR_WHITE  = new THREE.Color(0xaabbd0);
+  /* --- GROUP: everything rotates together --- */
+  const globeGroup = new THREE.Group();
+  scene.add(globeGroup);
 
-  /* ---- 1. PARTICLE GLOBE ---- */
-  const GLOBE_COUNT = 4000;
-  const globePositions = new Float32Array(GLOBE_COUNT * 3);
-  const globeColors    = new Float32Array(GLOBE_COUNT * 3);
-  const globeSizes     = new Float32Array(GLOBE_COUNT);
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     1. PARTICLE GLOBE — 6 000 points on sphere surface
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  const N = 6000;
+  const basePos   = new Float32Array(N * 3); // original positions
+  const pos       = new Float32Array(N * 3); // live (for repulsion)
+  const colors    = new Float32Array(N * 3);
 
-  for (let i = 0; i < GLOBE_COUNT; i++) {
-    // Fibonacci sphere distribution for even point spread
-    const phi   = Math.acos(1 - (2 * (i + 0.5)) / GLOBE_COUNT);
+  for (let i = 0; i < N; i++) {
+    const phi   = Math.acos(1 - 2 * (i + 0.5) / N);
     const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-    const r = 1.8 + (Math.random() - 0.5) * 0.15; // slight depth variation
+    const r     = 1.85 + (Math.random() - 0.5) * 0.12;
 
-    globePositions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-    globePositions[i * 3 + 1] = r * Math.cos(phi);
-    globePositions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+    const x = r * Math.sin(phi) * Math.cos(theta);
+    const y = r * Math.cos(phi);
+    const z = r * Math.sin(phi) * Math.sin(theta);
 
-    // Mix cyan and purple based on position
-    const mix = Math.random();
-    const c = mix > 0.55 ? COLOR_CYAN : (mix > 0.25 ? COLOR_PURPLE : COLOR_WHITE);
-    globeColors[i * 3]     = c.r;
-    globeColors[i * 3 + 1] = c.g;
-    globeColors[i * 3 + 2] = c.b;
+    basePos[i*3]=x; basePos[i*3+1]=y; basePos[i*3+2]=z;
+    pos[i*3]=x;     pos[i*3+1]=y;     pos[i*3+2]=z;
 
-    globeSizes[i] = Math.random() * 2.5 + 0.8;
+    /* color: cyan / purple / white gradient by latitude */
+    const lat = phi / Math.PI; // 0–1
+    const r_ = lat < 0.35 ? 0.0  : lat < 0.65 ? 0.48 : 0.9;
+    const g_ = lat < 0.35 ? 0.83 : lat < 0.65 ? 0.23 : 0.9;
+    const b_ = lat < 0.35 ? 1.0  : lat < 0.65 ? 0.93 : 1.0;
+    colors[i*3]=r_; colors[i*3+1]=g_; colors[i*3+2]=b_;
   }
 
   const globeGeo = new THREE.BufferGeometry();
-  globeGeo.setAttribute('position', new THREE.BufferAttribute(globePositions, 3));
-  globeGeo.setAttribute('color',    new THREE.BufferAttribute(globeColors,    3));
-  globeGeo.setAttribute('size',     new THREE.BufferAttribute(globeSizes,     1));
+  globeGeo.setAttribute('position', new THREE.BufferAttribute(pos,    3));
+  globeGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+
+  /* Circle texture for rounder, glowing particles */
+  const circleTex = (function makeCircle() {
+    const c  = document.createElement('canvas');
+    c.width  = 64; c.height = 64;
+    const cx = c.getContext('2d');
+    const gd = cx.createRadialGradient(32,32,0, 32,32,32);
+    gd.addColorStop(0,   'rgba(255,255,255,1)');
+    gd.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+    gd.addColorStop(1,   'rgba(255,255,255,0)');
+    cx.fillStyle = gd;
+    cx.beginPath();
+    cx.arc(32,32,32,0,Math.PI*2);
+    cx.fill();
+    return new THREE.CanvasTexture(c);
+  })();
 
   const globeMat = new THREE.PointsMaterial({
-    size: 0.022,
+    size: 0.028,
     vertexColors: true,
+    map: circleTex,
+    alphaMap: circleTex,
     transparent: true,
-    opacity: 0.85,
-    sizeAttenuation: true,
+    opacity: 0.9,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
+    sizeAttenuation: true,
   });
 
   const globe = new THREE.Points(globeGeo, globeMat);
-  scene.add(globe);
+  globeGroup.add(globe);
 
-  /* ---- 2. ORBITING RINGS ---- */
-  function createRing(radius, count, color, tiltX, tiltZ, sizeVal) {
-    const pos = new Float32Array(count * 3);
-    const col = new Float32Array(count * 3);
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     2. GLOWING CORE — layered emissive spheres
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function makeGlowSphere(radius, color, opacity) {
+    const geo = new THREE.SphereGeometry(radius, 32, 32);
+    const mat = new THREE.MeshBasicMaterial({
+      color, transparent: true, opacity,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false, side: THREE.FrontSide,
+    });
+    return new THREE.Mesh(geo, mat);
+  }
+
+  const core1 = makeGlowSphere(0.55, 0x00d4ff, 0.35); // bright cyan core
+  const core2 = makeGlowSphere(0.85, 0x3a1070, 0.20); // purple mid halo
+  const core3 = makeGlowSphere(1.20, 0x001a2e, 0.15); // deep blue outer fog
+  const core4 = makeGlowSphere(1.75, 0x00d4ff, 0.04); // subtle fringe
+  globeGroup.add(core1, core2, core3, core4);
+
+  /* Tiny bright centre point */
+  const centerGeo = new THREE.SphereGeometry(0.12, 16, 16);
+  const centerMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.9,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  globeGroup.add(new THREE.Mesh(centerGeo, centerMat));
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     3. ORBITING ENERGY RINGS
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function makeRing(radius, count, color, tiltX, tiltZ, ptSize) {
+    const p = new Float32Array(count * 3);
     const c = new THREE.Color(color);
-
+    const col = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2;
-      const spread = (Math.random() - 0.5) * 0.06;
-      pos[i * 3]     = (radius + spread) * Math.cos(angle);
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
-      pos[i * 3 + 2] = (radius + spread) * Math.sin(angle);
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
+      const jitter = (Math.random() - 0.5) * 0.07;
+      p[i*3]   = (radius + jitter) * Math.cos(angle);
+      p[i*3+1] = (Math.random() - 0.5) * 0.04;
+      p[i*3+2] = (radius + jitter) * Math.sin(angle);
+      col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
     }
-
     const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('position', new THREE.BufferAttribute(p,   3));
     geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
-
     const mat = new THREE.PointsMaterial({
-      size: sizeVal || 0.025,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.7,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
+      size: ptSize, vertexColors: true, map: circleTex,
+      transparent: true, opacity: 0.75,
+      blending: THREE.AdditiveBlending, depthWrite: false,
     });
-
     const ring = new THREE.Points(geo, mat);
     ring.rotation.x = tiltX;
     ring.rotation.z = tiltZ;
     return ring;
   }
 
-  const ring1 = createRing(2.4, 600, 0x00d4ff, Math.PI * 0.15, Math.PI * 0.05, 0.02);
-  const ring2 = createRing(2.7, 400, 0x7c3aed, Math.PI * 0.4,  Math.PI * 0.3,  0.018);
-  const ring3 = createRing(3.1, 300, 0x00d4ff, Math.PI * 0.72, Math.PI * 0.6,  0.015);
-  scene.add(ring1, ring2, ring3);
+  const ring1 = makeRing(2.5,  700, 0x00d4ff, Math.PI*0.12, Math.PI*0.04, 0.022);
+  const ring2 = makeRing(2.85, 500, 0x9d60ff, Math.PI*0.42, Math.PI*0.28, 0.018);
+  const ring3 = makeRing(3.2,  350, 0x00ffcc, Math.PI*0.68, Math.PI*0.55, 0.015);
+  globeGroup.add(ring1, ring2, ring3);
 
-  /* ---- 3. WIREFRAME ICOSAHEDRON ---- */
-  const icoGeo = new THREE.IcosahedronGeometry(1.78, 1);
-  const icoMat = new THREE.MeshBasicMaterial({
-    color: 0x00d4ff,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.06,
-  });
-  const ico = new THREE.Mesh(icoGeo, icoMat);
-  scene.add(ico);
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     4. WIREFRAME ICOSAHEDRON CAGE
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  const icoMesh = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.83, 1),
+    new THREE.MeshBasicMaterial({
+      color: 0x00d4ff, wireframe: true,
+      transparent: true, opacity: 0.07,
+      blending: THREE.AdditiveBlending, depthWrite: false,
+    })
+  );
+  globeGroup.add(icoMesh);
 
-  /* ---- 4. NEBULA STARFIELD ---- */
-  const STAR_COUNT = 2500;
-  const starPos = new Float32Array(STAR_COUNT * 3);
-  const starCol = new Float32Array(STAR_COUNT * 3);
-
-  for (let i = 0; i < STAR_COUNT; i++) {
-    starPos[i * 3]     = (Math.random() - 0.5) * 60;
-    starPos[i * 3 + 1] = (Math.random() - 0.5) * 60;
-    starPos[i * 3 + 2] = (Math.random() - 0.5) * 60;
-
-    const c = Math.random();
-    starCol[i * 3]     = c > 0.7 ? 0.0  : c > 0.4 ? 0.48 : 0.67;
-    starCol[i * 3 + 1] = c > 0.7 ? 0.83 : c > 0.4 ? 0.23 : 0.73;
-    starCol[i * 3 + 2] = c > 0.7 ? 1.0  : c > 0.4 ? 0.93 : 0.80;
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     5. BACKGROUND STARS (not in globeGroup)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  const STARS = 3000;
+  const sPos  = new Float32Array(STARS * 3);
+  const sCol  = new Float32Array(STARS * 3);
+  for (let i = 0; i < STARS; i++) {
+    sPos[i*3]   = (Math.random()-0.5)*80;
+    sPos[i*3+1] = (Math.random()-0.5)*80;
+    sPos[i*3+2] = (Math.random()-0.5)*80;
+    const t = Math.random();
+    sCol[i*3]   = t>0.6?0.0:t>0.35?0.48:0.85;
+    sCol[i*3+1] = t>0.6?0.83:t>0.35?0.23:0.85;
+    sCol[i*3+2] = 1.0;
   }
-
   const starGeo = new THREE.BufferGeometry();
-  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  starGeo.setAttribute('color',    new THREE.BufferAttribute(starCol, 3));
-
-  const starMat = new THREE.PointsMaterial({
-    size: 0.06,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.55,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-  });
-
-  const stars = new THREE.Points(starGeo, starMat);
+  starGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
+  starGeo.setAttribute('color',    new THREE.BufferAttribute(sCol, 3));
+  const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({
+    size: 0.07, vertexColors: true, map: circleTex,
+    transparent: true, opacity: 0.5,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  }));
   scene.add(stars);
 
-  /* ---- 5. MOUSE PARALLAX ---- */
-  let mouseX = 0, mouseY = 0;
-  let targetX = 0, targetY = 0;
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     6. SHOCKWAVE RINGS (click effect)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  const waves = [];
+  function spawnWave() {
+    const geo = new THREE.RingGeometry(0.1, 0.18, 64);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x00d4ff, side: THREE.DoubleSide,
+      transparent: true, opacity: 0.8,
+      blending: THREE.AdditiveBlending, depthWrite: false,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    globeGroup.add(mesh);
+    waves.push({ mesh, t: 0 });
+  }
 
-  document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  container.addEventListener('click', spawnWave);
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     7. MOUSE — direct rotation + momentum
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  let mouseNX = 0, mouseNY = 0;        // normalised -1…1
+  let targetRotX = 0, targetRotY = 0;  // target euler
+  let velX = 0, velY = 0;              // momentum velocity
+  let isDragging = false, prevMX = 0, prevMY = 0;
+
+  /* Normalised mouse position over the HERO section */
+  const heroSection = document.getElementById('hero');
+  heroSection.addEventListener('mousemove', (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    mouseNX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+    mouseNY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
   });
 
-  /* ---- 6. SCROLL-BASED GLOBE DRIFT ---- */
-  let scrollY = 0;
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+  heroSection.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    prevMX = e.clientX; prevMY = e.clientY;
+    velX = 0; velY = 0;
+  });
 
-  /* ---- 7. RESIZE HANDLER ---- */
+  window.addEventListener('mouseup',   () => { isDragging = false; });
+  window.addEventListener('mouseleave',() => { isDragging = false; });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - prevMX;
+    const dy = e.clientY - prevMY;
+    velY += dx * 0.012;
+    velX += dy * 0.012;
+    prevMX = e.clientX;
+    prevMY = e.clientY;
+  });
+
+  /* Touch support */
+  let lastTX = 0, lastTY = 0;
+  heroSection.addEventListener('touchstart', e => {
+    lastTX = e.touches[0].clientX;
+    lastTY = e.touches[0].clientY;
+    velX = 0; velY = 0;
+  }, {passive:true});
+  heroSection.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - lastTX;
+    const dy = e.touches[0].clientY - lastTY;
+    velY += dx * 0.015;
+    velX += dy * 0.015;
+    lastTX = e.touches[0].clientX;
+    lastTY = e.touches[0].clientY;
+  }, {passive:true});
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     8. RESIZE
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   window.addEventListener('resize', () => {
-    const w = container.clientWidth  || window.innerWidth;
-    const h = container.clientHeight || window.innerHeight;
-    camera.aspect = w / h;
+    W = container.clientWidth  || window.innerWidth;
+    H = container.clientHeight || window.innerHeight;
+    camera.aspect = W / H;
     camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
+    renderer.setSize(W, H);
   });
 
-  /* ---- 8. ANIMATION LOOP ---- */
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     9. ANIMATION LOOP
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   const clock = new THREE.Clock();
+  const DAMPING  = 0.92;  // momentum decay
+  const LERP     = 0.10;  // rotation smoothing
 
   function animate() {
     requestAnimationFrame(animate);
-    const elapsed = clock.getElapsedTime();
+    const t = clock.getElapsedTime();
 
-    // Smooth mouse follow
-    targetX += (mouseX - targetX) * 0.04;
-    targetY += (mouseY - targetY) * 0.04;
+    /* --- Mouse-driven target rotation --- */
+    if (!isDragging) {
+      /* Hover: globe tilts strongly toward mouse */
+      targetRotX += (mouseNY * 0.6 - targetRotX) * 0.05;
+      targetRotY += (mouseNX * 1.2 - targetRotY) * 0.05;
 
-    // Globe self-rotation
-    globe.rotation.y = elapsed * 0.08;
-    globe.rotation.x = elapsed * 0.03;
+      /* Apply momentum, then decay */
+      velX *= DAMPING;
+      velY *= DAMPING;
+    }
 
-    // Rings counter-rotate for dynamic feel
-    ring1.rotation.y = elapsed * 0.12;
-    ring2.rotation.y = -elapsed * 0.09;
-    ring3.rotation.y = elapsed * 0.06;
+    /* Smooth current rotation toward target + momentum */
+    globeGroup.rotation.x += (targetRotX - globeGroup.rotation.x) * LERP + velX * 0.05;
+    globeGroup.rotation.y += (targetRotY - globeGroup.rotation.y) * LERP + velY * 0.05;
 
-    // Icosahedron rotates slowly
-    ico.rotation.y = elapsed * 0.07;
-    ico.rotation.x = elapsed * 0.04;
+    /* Slow auto-spin around Y when mouse is not moving */
+    globeGroup.rotation.y += 0.0012;
 
-    // Stars drift gently
-    stars.rotation.y = elapsed * 0.005;
-    stars.rotation.x = elapsed * 0.003;
+    /* --- Rings counter-rotate --- */
+    ring1.rotation.y  = t * 0.18;
+    ring2.rotation.y  = -t * 0.13;
+    ring3.rotation.y  = t * 0.09;
 
-    // Mouse parallax on camera
-    camera.position.x += (targetX * 0.5 - camera.position.x) * 0.06;
-    camera.position.y += (-targetY * 0.5 - camera.position.y) * 0.06;
+    /* --- Icosahedron slow drift --- */
+    icoMesh.rotation.y = t * 0.055;
+    icoMesh.rotation.x = t * 0.032;
 
-    // Scroll-based z drift (globe pulls back slightly on scroll)
-    const scrollFactor = scrollY * 0.001;
-    camera.position.z = 5 + scrollFactor * 1.5;
+    /* --- Stars gentle drift --- */
+    stars.rotation.y = t * 0.004;
 
-    // Pulse globe opacity
-    globeMat.opacity = 0.75 + Math.sin(elapsed * 0.8) * 0.1;
+    /* --- Pulse core glow --- */
+    const pulse = 0.82 + Math.sin(t * 1.6) * 0.18;
+    core1.material.opacity = 0.30 * pulse;
+    core1.scale.setScalar(pulse);
+    const pulse2 = 0.88 + Math.sin(t * 1.0 + 1.2) * 0.12;
+    core2.material.opacity = 0.18 * pulse2;
 
-    camera.lookAt(scene.position);
+    /* --- Breathing globe opacity --- */
+    globeMat.opacity = 0.80 + Math.sin(t * 0.9) * 0.10;
+
+    /* --- Shockwave animation --- */
+    for (let i = waves.length - 1; i >= 0; i--) {
+      const w = waves[i];
+      w.t += 0.035;
+      const s = 1 + w.t * 12;
+      w.mesh.scale.setScalar(s);
+      w.mesh.material.opacity = Math.max(0, 0.8 - w.t * 0.9);
+      w.mesh.rotation.z = t;
+      if (w.t > 1) {
+        globeGroup.remove(w.mesh);
+        w.mesh.geometry.dispose();
+        w.mesh.material.dispose();
+        waves.splice(i, 1);
+      }
+    }
+
     renderer.render(scene, camera);
   }
 
   animate();
 })();
-
 
 /* ================================================================
    TYPEWRITER EFFECT
@@ -245,142 +374,110 @@
     'Open Source Contributor',
   ];
 
-  let phraseIdx = 0, charIdx = 0, isDeleting = false;
+  let idx = 0, ch = 0, del = false;
 
   function type() {
-    const current = phrases[phraseIdx];
-    el.textContent = isDeleting
-      ? current.substring(0, charIdx - 1)
-      : current.substring(0, charIdx + 1);
-
-    isDeleting ? charIdx-- : charIdx++;
-
-    let delay = isDeleting ? 50 : 90;
-
-    if (!isDeleting && charIdx === current.length) {
-      delay = 1800; isDeleting = true;
-    } else if (isDeleting && charIdx === 0) {
-      isDeleting = false;
-      phraseIdx = (phraseIdx + 1) % phrases.length;
-      delay = 400;
-    }
-
-    setTimeout(type, delay);
+    const cur = phrases[idx];
+    el.textContent = del ? cur.slice(0, ch-1) : cur.slice(0, ch+1);
+    del ? ch-- : ch++;
+    let ms = del ? 50 : 90;
+    if (!del && ch === cur.length)  { ms = 1800; del = true; }
+    else if (del && ch === 0)       { del = false; idx = (idx+1)%phrases.length; ms = 350; }
+    setTimeout(type, ms);
   }
-
   setTimeout(type, 1400);
 })();
 
-
 /* ================================================================
-   NAVBAR — scroll style + active link + hamburger
+   NAVBAR — scroll glass + active link + hamburger
    ================================================================ */
 (function initNavbar() {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
-
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   }, { passive: true });
 
-  // Active section highlight
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-        if (active) active.classList.add('active');
+  const links    = document.querySelectorAll('.nav-link');
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
       }
     });
-  }, { threshold: 0.4 });
+  }, { threshold: 0.4 }).observe(sections[0]);
+  sections.forEach(s => new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 }).observe(s));
 
-  sections.forEach(s => sectionObserver.observe(s));
-
-  // Hamburger toggle
-  const hamburger = document.getElementById('hamburger');
-  const navLinksList = document.getElementById('nav-links');
-  if (hamburger && navLinksList) {
-    hamburger.addEventListener('click', () => navLinksList.classList.toggle('open'));
-    navLinksList.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => navLinksList.classList.remove('open'))
-    );
+  const btn  = document.getElementById('hamburger');
+  const list = document.getElementById('nav-links');
+  if (btn && list) {
+    btn.addEventListener('click', () => list.classList.toggle('open'));
+    list.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => list.classList.remove('open')));
   }
 })();
 
-
 /* ================================================================
-   SCROLL REVEAL ANIMATIONS
+   SCROLL REVEAL
    ================================================================ */
-(function initScrollReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 
-
 /* ================================================================
-   ANIMATED STAT COUNTERS
+   STAT COUNTERS
    ================================================================ */
-(function initCounters() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el     = e.target;
       const target = parseInt(el.dataset.target, 10);
-      let start = 0;
-      const duration = 1500;
-      const step = (ts) => {
-        if (!start) start = ts;
-        const progress = Math.min((ts - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(eased * target);
-        if (progress < 1) requestAnimationFrame(step);
+      let t0 = null;
+      requestAnimationFrame(function step(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / 1500, 1);
+        el.textContent = Math.floor((1 - Math.pow(1-p, 3)) * target);
+        if (p < 1) requestAnimationFrame(step);
         else el.textContent = target;
-      };
-      requestAnimationFrame(step);
-      observer.unobserve(el);
+      });
+      obs.unobserve(el);
     });
   }, { threshold: 0.5 });
-
-  document.querySelectorAll('.stat-number').forEach(el => observer.observe(el));
+  document.querySelectorAll('.stat-number').forEach(el => obs.observe(el));
 })();
 
-
 /* ================================================================
-   PROJECT CARD SPOTLIGHT (mouse glow follows cursor)
+   PROJECT CARD SPOTLIGHT
    ================================================================ */
-(function initProjectGlow() {
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      const glow = card.querySelector('.project-glow');
-      if (glow) {
-        glow.style.background =
-          `radial-gradient(circle at ${x}% ${y}%, rgba(0,212,255,0.14) 0%, transparent 60%)`;
-      }
-    });
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width)  * 100;
+    const y = ((e.clientY - r.top)  / r.height) * 100;
+    const g = card.querySelector('.project-glow');
+    if (g) g.style.background =
+      `radial-gradient(circle at ${x}% ${y}%, rgba(0,212,255,0.14) 0%, transparent 60%)`;
   });
-})();
+});
 
-
-/* ================================================================
-   INJECT ACTIVE NAV LINK STYLE
-   ================================================================ */
-const style = document.createElement('style');
-style.textContent = `
-  .nav-link.active { color: var(--accent-cyan) !important; }
-  .nav-link.active::after { width: 100% !important; }
-`;
-document.head.appendChild(style);
+/* Active nav link style */
+const s = document.createElement('style');
+s.textContent = `.nav-link.active{color:var(--accent-cyan)!important}.nav-link.active::after{width:100%!important}`;
+document.head.appendChild(s);
