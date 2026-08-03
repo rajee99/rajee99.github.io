@@ -11,13 +11,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Three.js 3D hero canvas -->
-  <div id="threejs-container"></div>
+
 
   <!-- NAV -->
   <nav id="navbar">
@@ -40,6 +39,7 @@
 
   <!-- HERO -->
   <section id="hero">
+    <div id="hero-canvas"></div>
     <div class="hero-content">
       <p class="hero-greeting">Hello, World! 👋</p>
       <h1 class="hero-name">Abdullah Al <span class="highlight">Rajee</span></h1>
@@ -448,6 +448,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

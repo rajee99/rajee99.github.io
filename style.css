@@ -62,16 +62,17 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
-/* ---------- THREE.JS 3D CONTAINER ---------- */
-#threejs-container {
-  position: fixed;
+/* ---------- HERO CANVAS (Three.js mount point) ---------- */
+#hero-canvas {
+  position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 
-#threejs-container canvas {
+#hero-canvas canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
@@ -187,6 +188,8 @@ body {
 
 .hero-content {
   max-width: 800px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-greeting {
@@ -333,6 +336,7 @@ body {
   gap: 0.5rem;
   opacity: 0;
   animation: fadeSlideUp 0.8s ease 1.5s forwards;
+  z-index: 1;
 }
 
 .scroll-line {

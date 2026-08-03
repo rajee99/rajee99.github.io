@@ -12,17 +12,20 @@
    - Floating geometric wireframe
    ================================================================ */
 (function initThreeJS() {
-  const container = document.getElementById('threejs-container');
+  const container = document.getElementById('hero-canvas');
   if (!container || typeof THREE === 'undefined') return;
 
   /* --- SCENE SETUP --- */
+  const W = container.clientWidth  || window.innerWidth;
+  const H = container.clientHeight || window.innerHeight;
+
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+  const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 2000);
   camera.position.set(0, 0, 5);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(W, H);
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
@@ -172,9 +175,11 @@
 
   /* ---- 7. RESIZE HANDLER ---- */
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    const w = container.clientWidth  || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(w, h);
   });
 
   /* ---- 8. ANIMATION LOOP ---- */
