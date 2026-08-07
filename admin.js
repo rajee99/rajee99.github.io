@@ -85,6 +85,7 @@ loginForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('password-input').value;
     await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
+    console.error('Firebase Auth Error:', err.code, err.message, err);
     loginError.textContent  = getAuthError(err.code);
     loginError.style.display = 'block';
     loginBtn.textContent = 'Sign In';
