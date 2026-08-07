@@ -94,13 +94,16 @@ loginForm.addEventListener('submit', async (e) => {
 
 function getAuthError(code) {
   const map = {
-    'auth/wrong-password':     'Incorrect password.',
-    'auth/user-not-found':     'No account found with this email.',
-    'auth/invalid-email':      'Please enter a valid email.',
-    'auth/too-many-requests':  'Too many attempts. Try again later.',
-    'auth/invalid-credential': 'Invalid email or password.',
+    'auth/wrong-password':         'Incorrect password.',
+    'auth/user-not-found':         'No account found with this email.',
+    'auth/invalid-email':          'Please enter a valid email.',
+    'auth/too-many-requests':      'Too many attempts. Try again later.',
+    'auth/invalid-credential':     'Invalid email or password.',
+    'auth/invalid-api-key':        'Firebase API key is invalid. Contact admin.',
+    'auth/network-request-failed': 'Network error. Check your connection.',
+    'auth/app-not-authorized':     'App not authorized. Check Firebase config.',
   };
-  return map[code] || 'Sign in failed. Please try again.';
+  return map[code] || `Sign in failed (${code}). Check Firebase config.`;
 }
 
 /* ---- LOGOUT ---- */
