@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Abdullah Al Rajee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body class="admin-body">
+
+  <!-- NAV -->
+  <nav id="navbar" class="scrolled">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>Rajee<span class="logo-bracket">/&gt;</span>
+      </a>
+      <div class="admin-nav-right">
+        <span class="admin-badge">Admin Panel</span>
+        <button class="btn btn-secondary btn-sm" id="logout-btn" style="display:none;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="admin-screen">
+    <div class="login-card">
+      <div class="login-icon">🔐</div>
+      <h1 class="login-title">Admin Login</h1>
+      <p class="login-subtitle">Sign in to manage your blog</p>
+      <form id="login-form" autocomplete="off">
+        <div class="form-group">
+          <label for="email-input">Email</label>
+          <input type="email" id="email-input" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password-input">Password</label>
+          <input type="password" id="password-input" placeholder="••••••••" required />
+        </div>
+        <div id="login-error" class="form-error" style="display:none;"></div>
+        <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin-screen" class="admin-screen" style="display:none;">
+    <div class="admin-container">
+
+      <!-- COMPOSE POST -->
+      <div class="admin-compose-card">
+        <h2 class="compose-title">✍️ Create New Post</h2>
+        <form id="post-form">
+          <div class="form-group">
+            <label for="post-title">Post Title</label>
+            <input type="text" id="post-title" placeholder="What's on your mind today?" maxlength="120" />
+          </div>
+          <div class="form-group">
+            <label for="post-body">Content</label>
+            <textarea id="post-body" rows="5" placeholder="Write your post, share your thoughts, update, or project progress..." maxlength="2000"></textarea>
+            <span class="char-count" id="char-count">0 / 2000</span>
+          </div>
+
+          <!-- IMAGE UPLOAD -->
+          <div class="form-group">
+            <label>Photo (optional)</label>
+            <div class="image-upload-area" id="image-upload-area">
+              <input type="file" id="image-input" accept="image/*" hidden />
+              <div class="upload-placeholder" id="upload-placeholder">
+                <span class="upload-icon">📷</span>
+                <span>Click to add a photo</span>
+                <span class="upload-hint">JPEG, PNG, WEBP — auto-compressed</span>
+              </div>
+              <img id="image-preview" src="" alt="" style="display:none;" />
+              <button type="button" class="remove-image-btn" id="remove-image-btn" style="display:none;">✕ Remove</button>
+            </div>
+          </div>
+
+          <div id="post-error" class="form-error" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="post-btn">
+            🚀 Publish Post
+          </button>
+        </form>
+      </div>
+
+      <!-- POSTS LIST -->
+      <div class="admin-posts-section">
+        <h2 class="compose-title">📋 Your Posts</h2>
+        <div id="admin-posts-list">
+          <div class="posts-loading">Loading posts…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

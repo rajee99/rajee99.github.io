@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | Abdullah Al Rajee</title>
+  <meta name="description" content="Blog and updates by Abdullah Al Rajee — projects, thoughts, and tech insights." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar" class="scrolled">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>Rajee<span class="logo-bracket">/&gt;</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#about"     class="nav-link">About</a></li>
+        <li><a href="index.html#skills"    class="nav-link">Skills</a></li>
+        <li><a href="index.html#projects"  class="nav-link">Projects</a></li>
+        <li><a href="index.html#education" class="nav-link">Education</a></li>
+        <li><a href="blog.html"            class="nav-link active">Blog</a></li>
+        <li><a href="index.html#contact"   class="nav-link">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- BLOG HEADER -->
+  <header class="blog-header">
+    <div class="container">
+      <span class="section-tag">updates & thoughts</span>
+      <h1 class="blog-page-title">My <span class="highlight">Blog</span></h1>
+      <p class="blog-page-subtitle">Projects, learnings, and things I find interesting.</p>
+    </div>
+  </header>
+
+  <!-- POSTS FEED -->
+  <main class="blog-main">
+    <div class="blog-container">
+      <div id="posts-feed">
+        <div class="feed-loading">
+          <div class="spinner"></div>
+          <span>Loading posts…</span>
+        </div>
+      </div>
+      <div id="no-posts" style="display:none;" class="no-posts">
+        <div class="no-posts-icon">📝</div>
+        <p>No posts yet — check back soon!</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <p class="footer-text">Designed & Built by <span class="accent">Abdullah Al Rajee</span></p>
+      <p class="footer-sub">© 2025 · All rights reserved</p>
+    </div>
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="blog.js"></script>
+</body>
+</html>
