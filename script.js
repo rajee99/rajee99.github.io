@@ -510,6 +510,20 @@ document.querySelectorAll('.project-card').forEach(card => {
 })();
 
 /* ================================================================
+   BACK TO TOP
+   ================================================================ */
+(function initBackTop() {
+  const btn = document.getElementById('back-top');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('show', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+/* ================================================================
    ACTIVE NAV LINK STYLE (injected dynamically)
    ================================================================ */
 const _navStyle = document.createElement('style');

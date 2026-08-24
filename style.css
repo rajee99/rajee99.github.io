@@ -843,6 +843,38 @@ button { font-family: inherit; cursor: pointer; }
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* ── BACK TO TOP ──────────────────────────────────────────── */
+#back-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: var(--a-dim);
+  border: 1px solid var(--a-border);
+  color: var(--a-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .3s, transform .3s, background .2s;
+  z-index: 90;
+  pointer-events: none;
+}
+#back-top svg { width: 18px; height: 18px; }
+#back-top.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#back-top:hover {
+  background: var(--a);
+  color: #fff;
+  border-color: var(--a);
+}
+
 /* ── RESPONSIVE ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .projects-grid { grid-template-columns: 1fr; }
