@@ -1,6 +1,6 @@
-/* ============================================================
-   ABDULLAH AL RAJEE — PORTFOLIO JAVASCRIPT
-   Three.js 3D Scene · Typewriter · Scroll Reveal · Nav
+﻿/* ============================================================
+   ABDULLAH AL RAJEE â€” PORTFOLIO JAVASCRIPT
+   Three.js 3D Scene Â· Typewriter Â· Scroll Reveal Â· Nav
    ============================================================ */
 
 /* ================================================================
@@ -39,9 +39,9 @@
   const globeGroup = new THREE.Group();
   scene.add(globeGroup);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     1. PARTICLE GLOBE — indigo/violet colour palette
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+     1. PARTICLE GLOBE â€” indigo/violet colour palette
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   const N = 5000;
   const basePos = new Float32Array(N * 3);
   const pos     = new Float32Array(N * 3);
@@ -59,14 +59,11 @@
     basePos[i*3]=x; basePos[i*3+1]=y; basePos[i*3+2]=z;
     pos[i*3]=x;     pos[i*3+1]=y;     pos[i*3+2]=z;
 
-    /* Indigo → violet → soft white gradient by latitude */
-    const lat = phi / Math.PI; // 0–1
-    // Top: indigo #7c6ff7  (0.486, 0.435, 0.969)
-    // Mid: violet #a78bfa  (0.655, 0.545, 0.980)
-    // Bot: lavender-white  (0.88,  0.86,  1.0)
-    const r_ = lat < 0.35 ? 0.486 : lat < 0.65 ? 0.655 : 0.88;
-    const g_ = lat < 0.35 ? 0.435 : lat < 0.65 ? 0.545 : 0.86;
-    const b_ = lat < 0.35 ? 0.969 : lat < 0.65 ? 0.980 : 1.00;
+    /* colour: white â†’ gray â†’ near-white by latitude */
+    const lat = phi / Math.PI;
+    const r_ = lat < 0.35 ? 1.0  : lat < 0.65 ? 0.55 : 0.85;
+    const g_ = lat < 0.35 ? 1.0  : lat < 0.65 ? 0.55 : 0.85;
+    const b_ = lat < 0.35 ? 1.0  : lat < 0.65 ? 0.55 : 0.85;
     colors[i*3]=r_; colors[i*3+1]=g_; colors[i*3+2]=b_;
   }
 
@@ -105,9 +102,9 @@
   const globe = new THREE.Points(globeGeo, globeMat);
   globeGroup.add(globe);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     2. GLOWING CORE — indigo layered spheres
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+     2. GLOWING CORE â€” indigo layered spheres
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   function makeGlowSphere(radius, color, opacity) {
     const geo = new THREE.SphereGeometry(radius, 32, 32);
     const mat = new THREE.MeshBasicMaterial({
@@ -118,15 +115,15 @@
     return new THREE.Mesh(geo, mat);
   }
 
-  const core1 = makeGlowSphere(0.55, 0x7c6ff7, 0.30); // indigo core
-  const core2 = makeGlowSphere(0.85, 0x4f3fa0, 0.18); // deep indigo mid
-  const core3 = makeGlowSphere(1.20, 0x0c0a20, 0.14); // dark outer fog
-  const core4 = makeGlowSphere(1.75, 0x7c6ff7, 0.04); // subtle fringe
+  const core1 = makeGlowSphere(0.55, 0xffffff, 0.22); // indigo core
+  const core2 = makeGlowSphere(0.85, 0x888888, 0.12); // deep indigo mid
+  const core3 = makeGlowSphere(1.20, 0x111111, 0.10); // dark outer fog
+  const core4 = makeGlowSphere(1.75, 0xffffff, 0.03); // subtle fringe
   globeGroup.add(core1, core2, core3, core4);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     3. ORBITING ENERGY RINGS — indigo/violet
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+     3. ORBITING ENERGY RINGS â€” indigo/violet
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   function makeRing(radius, count, color, tiltX, tiltZ, ptSize) {
     const p   = new Float32Array(count * 3);
     const c   = new THREE.Color(color);
@@ -153,27 +150,27 @@
     return ring;
   }
 
-  const ring1 = makeRing(2.5,  700, 0x7c6ff7, Math.PI*0.12, Math.PI*0.04, 0.022);
-  const ring2 = makeRing(2.85, 500, 0xc4b5fd, Math.PI*0.42, Math.PI*0.28, 0.018);
-  const ring3 = makeRing(3.2,  350, 0xa78bfa, Math.PI*0.68, Math.PI*0.55, 0.015);
+  const ring1 = makeRing(2.5,  700, 0xffffff, Math.PI*0.12, Math.PI*0.04, 0.022);
+  const ring2 = makeRing(2.85, 500, 0x999999, Math.PI*0.42, Math.PI*0.28, 0.018);
+  const ring3 = makeRing(3.2,  350, 0xdddddd, Math.PI*0.68, Math.PI*0.55, 0.015);
   globeGroup.add(ring1, ring2, ring3);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
      4. WIREFRAME ICOSAHEDRON CAGE
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   const icoMesh = new THREE.Mesh(
     new THREE.IcosahedronGeometry(1.83, 1),
     new THREE.MeshBasicMaterial({
-      color: 0x7c6ff7, wireframe: true,
+      color: 0xffffff, wireframe: true,
       transparent: true, opacity: 0.06,
       blending: THREE.AdditiveBlending, depthWrite: false,
     })
   );
   globeGroup.add(icoMesh);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     5. BACKGROUND STARS — lavender tint
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+     5. BACKGROUND STARS â€” lavender tint
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   const STARS = 2500;
   const sPos  = new Float32Array(STARS * 3);
   const sCol  = new Float32Array(STARS * 3);
@@ -183,8 +180,8 @@
     sPos[i*3+2] = (Math.random()-0.5)*80;
     const t = Math.random();
     // indigo / violet / near-white
-    sCol[i*3]   = t>0.6 ? 0.486 : t>0.35 ? 0.655 : 0.92;
-    sCol[i*3+1] = t>0.6 ? 0.435 : t>0.35 ? 0.545 : 0.90;
+    sCol[i*3]   = t>0.6 ? 0.4 : t>0.35 ? 0.7 : 0.95;
+    sCol[i*3+1] = t>0.6 ? 0.4 : t>0.35 ? 0.7 : 0.95;
     sCol[i*3+2] = 1.0;
   }
   const starGeo = new THREE.BufferGeometry();
@@ -197,14 +194,14 @@
   }));
   scene.add(stars);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
      6. SHOCKWAVE RINGS (click)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   const waves = [];
   function spawnWave() {
     const geo  = new THREE.RingGeometry(0.1, 0.18, 64);
     const mat  = new THREE.MeshBasicMaterial({
-      color: 0x7c6ff7, side: THREE.DoubleSide,
+      color: 0xffffff, side: THREE.DoubleSide,
       transparent: true, opacity: 0.8,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
@@ -214,9 +211,9 @@
   }
   container.addEventListener('click', spawnWave);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     7. MOUSE — drag rotation + momentum
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+     7. MOUSE â€” drag rotation + momentum
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   let mouseNX = 0, mouseNY = 0;
   let velX = 0, velY = 0;
   let isDragging = false, prevMX = 0, prevMY = 0;
@@ -260,9 +257,9 @@
     lastTY = e.touches[0].clientY;
   }, {passive:true});
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
      8. RESIZE
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   window.addEventListener('resize', () => {
     W = container.clientWidth  || window.innerWidth;
     H = container.clientHeight || window.innerHeight;
@@ -271,9 +268,9 @@
     renderer.setSize(W, H);
   });
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
      9. ANIMATION LOOP
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
   const clock   = new THREE.Clock();
   const DAMPING = 0.90;
   const LERP    = 0.08;
@@ -365,7 +362,7 @@
 })();
 
 /* ================================================================
-   NAV — scroll shadow + hamburger + active link
+   NAV â€” scroll shadow + hamburger + active link
    ================================================================ */
 (function initNav() {
   const nav = document.getElementById('nav');
@@ -425,7 +422,7 @@
 })();
 
 /* ================================================================
-   STAT COUNTERS — animates .stat-n[data-target]
+   STAT COUNTERS â€” animates .stat-n[data-target]
    ================================================================ */
 (function initCounters() {
   const io = new IntersectionObserver(entries => {
@@ -448,7 +445,7 @@
 })();
 
 /* ================================================================
-   PROJECT CARD — cursor spotlight glow
+   PROJECT CARD â€” cursor spotlight glow
    ================================================================ */
 document.querySelectorAll('.project-card').forEach(card => {
   card.addEventListener('mousemove', e => {
@@ -478,10 +475,10 @@ document.querySelectorAll('.project-card').forEach(card => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     btn.disabled = true;
-    btn.textContent = 'Sending…';
+    btn.textContent = 'Sendingâ€¦';
 
     try {
-      /* Use Formspree or similar — replace ACTION with your endpoint */
+      /* Use Formspree or similar â€” replace ACTION with your endpoint */
       const ACTION = 'https://formspree.io/f/placeholder';
       const data   = new FormData(form);
       const res    = await fetch(ACTION, {
@@ -532,3 +529,5 @@ _navStyle.textContent = `
   #nav-links a.active::after { width: 100% !important; background: var(--a); }
 `;
 document.head.appendChild(_navStyle);
+
+
