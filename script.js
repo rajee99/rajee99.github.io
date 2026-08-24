@@ -1,24 +1,21 @@
 /* ============================================================
-   ABDULLAH AL RAJEE - PORTFOLIO JAVASCRIPT
-   Three.js 3D Scene + Typewriter + Scroll Animations + Nav
+   ABDULLAH AL RAJEE — PORTFOLIO JAVASCRIPT
+   Three.js 3D Scene · Typewriter · Scroll Reveal · Nav
    ============================================================ */
 
 /* ================================================================
-   THREE.JS 3D HERO SCENE — ENHANCED
-   - 6000-particle globe with Fibonacci distribution
-   - Direct mouse-driven globe rotation (not camera shift)
-   - Momentum / inertia after mouse leaves
-   - Glowing inner core spheres (layered bloom)
-   - Mouse-proximity particle repulsion
-   - Click → shockwave ripple
+   THREE.JS 3D HERO SCENE
+   - 5 000-particle globe (Fibonacci distribution)
+   - Indigo/violet colour palette
+   - Mouse drag rotation + momentum
+   - Glowing core spheres
    - Orbiting energy rings
-   - Dynamic color cycling
+   - Click shockwave ripple
    ================================================================ */
 (function initThreeJS() {
   const container = document.getElementById('hero-canvas');
   if (!container) return;
 
-  /* Poll until THREE is available (it loads async at bottom of body) */
   if (typeof THREE === 'undefined') {
     setTimeout(initThreeJS, 100);
     return;
@@ -29,8 +26,8 @@
   let H = container.clientHeight || window.innerHeight;
 
   /* --- SCENE --- */
-  const scene    = new THREE.Scene();
-  const camera   = new THREE.PerspectiveCamera(55, W / H, 0.01, 1000);
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, W / H, 0.01, 1000);
   camera.position.set(0, 0, 4.8);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -39,17 +36,16 @@
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  /* --- GROUP: everything rotates together --- */
   const globeGroup = new THREE.Group();
   scene.add(globeGroup);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     1. PARTICLE GLOBE — 6 000 points on sphere surface
+     1. PARTICLE GLOBE — indigo/violet colour palette
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  const N = 6000;
-  const basePos   = new Float32Array(N * 3); // original positions
-  const pos       = new Float32Array(N * 3); // live (for repulsion)
-  const colors    = new Float32Array(N * 3);
+  const N = 5000;
+  const basePos = new Float32Array(N * 3);
+  const pos     = new Float32Array(N * 3);
+  const colors  = new Float32Array(N * 3);
 
   for (let i = 0; i < N; i++) {
     const phi   = Math.acos(1 - 2 * (i + 0.5) / N);
@@ -63,11 +59,14 @@
     basePos[i*3]=x; basePos[i*3+1]=y; basePos[i*3+2]=z;
     pos[i*3]=x;     pos[i*3+1]=y;     pos[i*3+2]=z;
 
-    /* color: cyan / purple / white gradient by latitude */
+    /* Indigo → violet → soft white gradient by latitude */
     const lat = phi / Math.PI; // 0–1
-    const r_ = lat < 0.35 ? 0.0  : lat < 0.65 ? 0.48 : 0.9;
-    const g_ = lat < 0.35 ? 0.83 : lat < 0.65 ? 0.23 : 0.9;
-    const b_ = lat < 0.35 ? 1.0  : lat < 0.65 ? 0.93 : 1.0;
+    // Top: indigo #7c6ff7  (0.486, 0.435, 0.969)
+    // Mid: violet #a78bfa  (0.655, 0.545, 0.980)
+    // Bot: lavender-white  (0.88,  0.86,  1.0)
+    const r_ = lat < 0.35 ? 0.486 : lat < 0.65 ? 0.655 : 0.88;
+    const g_ = lat < 0.35 ? 0.435 : lat < 0.65 ? 0.545 : 0.86;
+    const b_ = lat < 0.35 ? 0.969 : lat < 0.65 ? 0.980 : 1.00;
     colors[i*3]=r_; colors[i*3+1]=g_; colors[i*3+2]=b_;
   }
 
@@ -75,7 +74,7 @@
   globeGeo.setAttribute('position', new THREE.BufferAttribute(pos,    3));
   globeGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
 
-  /* Circle texture for rounder, glowing particles */
+  /* Soft glowing particle texture */
   const circleTex = (function makeCircle() {
     const c  = document.createElement('canvas');
     c.width  = 64; c.height = 64;
@@ -92,12 +91,12 @@
   })();
 
   const globeMat = new THREE.PointsMaterial({
-    size: 0.028,
+    size: 0.026,
     vertexColors: true,
     map: circleTex,
     alphaMap: circleTex,
     transparent: true,
-    opacity: 0.9,
+    opacity: 0.88,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     sizeAttenuation: true,
@@ -107,7 +106,7 @@
   globeGroup.add(globe);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     2. GLOWING CORE — layered emissive spheres
+     2. GLOWING CORE — indigo layered spheres
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   function makeGlowSphere(radius, color, opacity) {
     const geo = new THREE.SphereGeometry(radius, 32, 32);
@@ -119,23 +118,21 @@
     return new THREE.Mesh(geo, mat);
   }
 
-  const core1 = makeGlowSphere(0.55, 0x00d4ff, 0.35); // bright cyan core
-  const core2 = makeGlowSphere(0.85, 0x3a1070, 0.20); // purple mid halo
-  const core3 = makeGlowSphere(1.20, 0x001a2e, 0.15); // deep blue outer fog
-  const core4 = makeGlowSphere(1.75, 0x00d4ff, 0.04); // subtle fringe
+  const core1 = makeGlowSphere(0.55, 0x7c6ff7, 0.30); // indigo core
+  const core2 = makeGlowSphere(0.85, 0x4f3fa0, 0.18); // deep indigo mid
+  const core3 = makeGlowSphere(1.20, 0x0c0a20, 0.14); // dark outer fog
+  const core4 = makeGlowSphere(1.75, 0x7c6ff7, 0.04); // subtle fringe
   globeGroup.add(core1, core2, core3, core4);
 
-
-
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     3. ORBITING ENERGY RINGS
+     3. ORBITING ENERGY RINGS — indigo/violet
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   function makeRing(radius, count, color, tiltX, tiltZ, ptSize) {
-    const p = new Float32Array(count * 3);
-    const c = new THREE.Color(color);
+    const p   = new Float32Array(count * 3);
+    const c   = new THREE.Color(color);
     const col = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2;
+      const angle  = (i / count) * Math.PI * 2;
       const jitter = (Math.random() - 0.5) * 0.07;
       p[i*3]   = (radius + jitter) * Math.cos(angle);
       p[i*3+1] = (Math.random() - 0.5) * 0.04;
@@ -147,7 +144,7 @@
     geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
     const mat = new THREE.PointsMaterial({
       size: ptSize, vertexColors: true, map: circleTex,
-      transparent: true, opacity: 0.75,
+      transparent: true, opacity: 0.7,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     const ring = new THREE.Points(geo, mat);
@@ -156,9 +153,9 @@
     return ring;
   }
 
-  const ring1 = makeRing(2.5,  700, 0x00d4ff, Math.PI*0.12, Math.PI*0.04, 0.022);
-  const ring2 = makeRing(2.85, 500, 0x9d60ff, Math.PI*0.42, Math.PI*0.28, 0.018);
-  const ring3 = makeRing(3.2,  350, 0x00ffcc, Math.PI*0.68, Math.PI*0.55, 0.015);
+  const ring1 = makeRing(2.5,  700, 0x7c6ff7, Math.PI*0.12, Math.PI*0.04, 0.022);
+  const ring2 = makeRing(2.85, 500, 0xc4b5fd, Math.PI*0.42, Math.PI*0.28, 0.018);
+  const ring3 = makeRing(3.2,  350, 0xa78bfa, Math.PI*0.68, Math.PI*0.55, 0.015);
   globeGroup.add(ring1, ring2, ring3);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -167,17 +164,17 @@
   const icoMesh = new THREE.Mesh(
     new THREE.IcosahedronGeometry(1.83, 1),
     new THREE.MeshBasicMaterial({
-      color: 0x00d4ff, wireframe: true,
-      transparent: true, opacity: 0.07,
+      color: 0x7c6ff7, wireframe: true,
+      transparent: true, opacity: 0.06,
       blending: THREE.AdditiveBlending, depthWrite: false,
     })
   );
   globeGroup.add(icoMesh);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     5. BACKGROUND STARS (not in globeGroup)
+     5. BACKGROUND STARS — lavender tint
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  const STARS = 3000;
+  const STARS = 2500;
   const sPos  = new Float32Array(STARS * 3);
   const sCol  = new Float32Array(STARS * 3);
   for (let i = 0; i < STARS; i++) {
@@ -185,28 +182,29 @@
     sPos[i*3+1] = (Math.random()-0.5)*80;
     sPos[i*3+2] = (Math.random()-0.5)*80;
     const t = Math.random();
-    sCol[i*3]   = t>0.6?0.0:t>0.35?0.48:0.85;
-    sCol[i*3+1] = t>0.6?0.83:t>0.35?0.23:0.85;
+    // indigo / violet / near-white
+    sCol[i*3]   = t>0.6 ? 0.486 : t>0.35 ? 0.655 : 0.92;
+    sCol[i*3+1] = t>0.6 ? 0.435 : t>0.35 ? 0.545 : 0.90;
     sCol[i*3+2] = 1.0;
   }
   const starGeo = new THREE.BufferGeometry();
   starGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
   starGeo.setAttribute('color',    new THREE.BufferAttribute(sCol, 3));
   const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({
-    size: 0.07, vertexColors: true, map: circleTex,
-    transparent: true, opacity: 0.5,
+    size: 0.06, vertexColors: true, map: circleTex,
+    transparent: true, opacity: 0.45,
     blending: THREE.AdditiveBlending, depthWrite: false,
   }));
   scene.add(stars);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     6. SHOCKWAVE RINGS (click effect)
+     6. SHOCKWAVE RINGS (click)
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   const waves = [];
   function spawnWave() {
-    const geo = new THREE.RingGeometry(0.1, 0.18, 64);
-    const mat = new THREE.MeshBasicMaterial({
-      color: 0x00d4ff, side: THREE.DoubleSide,
+    const geo  = new THREE.RingGeometry(0.1, 0.18, 64);
+    const mat  = new THREE.MeshBasicMaterial({
+      color: 0x7c6ff7, side: THREE.DoubleSide,
       transparent: true, opacity: 0.8,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
@@ -214,14 +212,13 @@
     globeGroup.add(mesh);
     waves.push({ mesh, t: 0 });
   }
-
   container.addEventListener('click', spawnWave);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     7. MOUSE — direct rotation + momentum
+     7. MOUSE — drag rotation + momentum
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  let mouseNX = 0, mouseNY = 0;  // normalised -1…1
-  let velX = 0, velY = 0;        // spin momentum (radians/frame)
+  let mouseNX = 0, mouseNY = 0;
+  let velX = 0, velY = 0;
   let isDragging = false, prevMX = 0, prevMY = 0;
   let mouseActive = false, mouseTimer = null;
 
@@ -229,7 +226,7 @@
 
   heroSection.addEventListener('mousemove', (e) => {
     const rect = heroSection.getBoundingClientRect();
-    mouseNX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2; // -1…1
+    mouseNX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
     mouseNY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
     mouseActive = true;
     clearTimeout(mouseTimer);
@@ -237,23 +234,19 @@
   });
 
   heroSection.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    prevMX = e.clientX; prevMY = e.clientY;
+    isDragging = true; prevMX = e.clientX; prevMY = e.clientY;
     velX = 0; velY = 0;
   });
   window.addEventListener('mouseup',    () => { isDragging = false; });
   window.addEventListener('mouseleave', () => { isDragging = false; });
 
-  /* Drag: accumulate velocity directly from delta pixels */
   window.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
-    velY += (e.clientX - prevMX) * 0.018;  // gentler drag
+    velY += (e.clientX - prevMX) * 0.018;
     velX += (e.clientY - prevMY) * 0.018;
-    prevMX = e.clientX;
-    prevMY = e.clientY;
+    prevMX = e.clientX; prevMY = e.clientY;
   });
 
-  /* Touch */
   let lastTX = 0, lastTY = 0;
   heroSection.addEventListener('touchstart', e => {
     lastTX = e.touches[0].clientX;
@@ -266,7 +259,6 @@
     lastTX = e.touches[0].clientX;
     lastTY = e.touches[0].clientY;
   }, {passive:true});
-
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      8. RESIZE
@@ -282,56 +274,46 @@
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      9. ANIMATION LOOP
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  const clock  = new THREE.Clock();
-  const DAMPING = 0.90;  // momentum decay
-  const LERP    = 0.08;  // smooth, not twitchy
+  const clock   = new THREE.Clock();
+  const DAMPING = 0.90;
+  const LERP    = 0.08;
 
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
     if (isDragging) {
-      /* DRAG MODE — apply accumulated velocity directly, no lerp lag */
       globeGroup.rotation.x += velX;
       globeGroup.rotation.y += velY;
       velX *= DAMPING;
       velY *= DAMPING;
     } else {
-      /* HOVER MODE — globe tilts gently toward mouse */
-      const targetX =  mouseNY * 0.5;  // subtle up/down
-      const targetY =  mouseNX * 0.8;  // subtle left/right
+      const targetX =  mouseNY * 0.5;
+      const targetY =  mouseNX * 0.8;
       globeGroup.rotation.x += (targetX - globeGroup.rotation.x) * LERP;
       globeGroup.rotation.y += (targetY - globeGroup.rotation.y) * LERP;
-
       velX *= DAMPING;
       velY *= DAMPING;
-
       if (!mouseActive) globeGroup.rotation.y += 0.0018;
     }
 
-    /* --- Rings counter-rotate --- */
-    ring1.rotation.y  = t * 0.18;
+    ring1.rotation.y  =  t * 0.18;
     ring2.rotation.y  = -t * 0.13;
-    ring3.rotation.y  = t * 0.09;
+    ring3.rotation.y  =  t * 0.09;
 
-    /* --- Icosahedron slow drift --- */
     icoMesh.rotation.y = t * 0.055;
     icoMesh.rotation.x = t * 0.032;
 
-    /* --- Stars gentle drift --- */
     stars.rotation.y = t * 0.004;
 
-    /* --- Pulse core glow --- */
-    const pulse = 0.82 + Math.sin(t * 1.6) * 0.18;
-    core1.material.opacity = 0.30 * pulse;
+    const pulse  = 0.82 + Math.sin(t * 1.6) * 0.18;
+    core1.material.opacity = 0.28 * pulse;
     core1.scale.setScalar(pulse);
     const pulse2 = 0.88 + Math.sin(t * 1.0 + 1.2) * 0.12;
-    core2.material.opacity = 0.18 * pulse2;
+    core2.material.opacity = 0.16 * pulse2;
 
-    /* --- Breathing globe opacity --- */
     globeMat.opacity = 0.80 + Math.sin(t * 0.9) * 0.10;
 
-    /* --- Shockwave animation --- */
     for (let i = waves.length - 1; i >= 0; i--) {
       const w = waves[i];
       w.t += 0.035;
@@ -354,7 +336,7 @@
 })();
 
 /* ================================================================
-   TYPEWRITER EFFECT
+   TYPEWRITER
    ================================================================ */
 (function initTypewriter() {
   const el = document.getElementById('typewriter');
@@ -374,71 +356,79 @@
     const cur = phrases[idx];
     el.textContent = del ? cur.slice(0, ch-1) : cur.slice(0, ch+1);
     del ? ch-- : ch++;
-    let ms = del ? 50 : 90;
-    if (!del && ch === cur.length)  { ms = 1800; del = true; }
-    else if (del && ch === 0)       { del = false; idx = (idx+1)%phrases.length; ms = 350; }
+    let ms = del ? 48 : 88;
+    if (!del && ch === cur.length)  { ms = 1900; del = true; }
+    else if (del && ch === 0)       { del = false; idx = (idx+1)%phrases.length; ms = 380; }
     setTimeout(type, ms);
   }
   setTimeout(type, 1400);
 })();
 
 /* ================================================================
-   NAVBAR — scroll glass + active link + hamburger
+   NAV — scroll shadow + hamburger + active link
    ================================================================ */
-(function initNavbar() {
-  const navbar = document.getElementById('navbar');
-  if (!navbar) return;
+(function initNav() {
+  const nav = document.getElementById('nav');
+  if (!nav) return;
+
+  /* Scroll shadow */
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    nav.style.boxShadow = window.scrollY > 50
+      ? '0 1px 32px rgba(0,0,0,.5)'
+      : 'none';
   }, { passive: true });
 
-  const sections = document.querySelectorAll('section[id]');
-  const links    = document.querySelectorAll('.nav-link');
-  new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
-      }
-    });
-  }, { threshold: 0.4 }).observe(sections[0]);
-  sections.forEach(s => new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
-      }
-    });
-  }, { threshold: 0.4 }).observe(s));
-
+  /* Hamburger */
   const btn  = document.getElementById('hamburger');
   const list = document.getElementById('nav-links');
   if (btn && list) {
-    btn.addEventListener('click', () => list.classList.toggle('open'));
-    list.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => list.classList.remove('open')));
+    btn.addEventListener('click', () => {
+      list.classList.toggle('open');
+      btn.classList.toggle('open');
+    });
+    list.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        list.classList.remove('open');
+        btn.classList.remove('open');
+      });
+    });
   }
+
+  /* Active link highlight */
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('#nav-links a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`#nav-links a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => io.observe(s));
 })();
 
 /* ================================================================
    SCROLL REVEAL
    ================================================================ */
-(function () {
-  const obs = new IntersectionObserver(entries => {
+(function initReveal() {
+  const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 })();
 
 /* ================================================================
-   STAT COUNTERS
+   STAT COUNTERS — animates .stat-n[data-target]
    ================================================================ */
-(function () {
-  const obs = new IntersectionObserver(entries => {
+(function initCounters() {
+  const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       const el     = e.target;
@@ -446,32 +436,85 @@
       let t0 = null;
       requestAnimationFrame(function step(ts) {
         if (!t0) t0 = ts;
-        const p = Math.min((ts - t0) / 1500, 1);
+        const p = Math.min((ts - t0) / 1400, 1);
         el.textContent = Math.floor((1 - Math.pow(1-p, 3)) * target);
         if (p < 1) requestAnimationFrame(step);
         else el.textContent = target;
       });
-      obs.unobserve(el);
+      io.unobserve(el);
     });
   }, { threshold: 0.5 });
-  document.querySelectorAll('.stat-number').forEach(el => obs.observe(el));
+  document.querySelectorAll('.stat-n[data-target]').forEach(el => io.observe(el));
 })();
 
 /* ================================================================
-   PROJECT CARD SPOTLIGHT
+   PROJECT CARD — cursor spotlight glow
    ================================================================ */
 document.querySelectorAll('.project-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
     const x = ((e.clientX - r.left) / r.width)  * 100;
     const y = ((e.clientY - r.top)  / r.height) * 100;
-    const g = card.querySelector('.project-glow');
-    if (g) g.style.background =
-      `radial-gradient(circle at ${x}% ${y}%, rgba(0,212,255,0.14) 0%, transparent 60%)`;
+    card.style.setProperty('--mx', `${x}%`);
+    card.style.setProperty('--my', `${y}%`);
+    card.style.background = `
+      radial-gradient(circle at ${x}% ${y}%, rgba(124,111,247,0.09) 0%, transparent 55%),
+      var(--bg-card)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.background = '';
   });
 });
 
-/* Active nav link style */
-const s = document.createElement('style');
-s.textContent = `.nav-link.active{color:var(--accent-cyan)!important}.nav-link.active::after{width:100%!important}`;
-document.head.appendChild(s);
+/* ================================================================
+   CONTACT FORM
+   ================================================================ */
+(function initContactForm() {
+  const form    = document.getElementById('contact-form');
+  const btn     = document.getElementById('submit-btn');
+  const feedback = document.getElementById('form-feedback');
+  if (!form || !btn || !feedback) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      /* Use Formspree or similar — replace ACTION with your endpoint */
+      const ACTION = 'https://formspree.io/f/placeholder';
+      const data   = new FormData(form);
+      const res    = await fetch(ACTION, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' },
+      });
+
+      if (res.ok) {
+        feedback.className = 'form-feedback ok';
+        feedback.textContent = 'Message sent! I\'ll get back to you soon.';
+        feedback.style.display = 'block';
+        form.reset();
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    } catch {
+      feedback.className = 'form-feedback err';
+      feedback.textContent = 'Something went wrong. Please email me directly at rajee0585@gmail.com';
+      feedback.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    }
+  });
+})();
+
+/* ================================================================
+   ACTIVE NAV LINK STYLE (injected dynamically)
+   ================================================================ */
+const _navStyle = document.createElement('style');
+_navStyle.textContent = `
+  #nav-links a.active { color: var(--t1) !important; }
+  #nav-links a.active::after { width: 100% !important; background: var(--a); }
+`;
+document.head.appendChild(_navStyle);
