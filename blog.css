@@ -1,7 +1,31 @@
 /* ============================================================
    BLOG + ADMIN STYLES
-   Extends the main portfolio style.css
+   Standalone resilient styling
    ============================================================ */
+
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-card: #141414;
+  --bg-card-hover: #1c1c1c;
+
+  --accent-cyan: #ffffff;
+  --accent-purple: #888888;
+  --accent-pink: #ffffff;
+  --accent-green: #10b981;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+
+  --border-subtle: #222222;
+  --border-glow: #444444;
+
+  --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --nav-height: 70px;
+}
 
 /* ---------- SHARED OVERRIDES ---------- */
 .admin-body { background-color: var(--bg-primary); }
