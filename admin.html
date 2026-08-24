@@ -1,108 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel | Abdullah Al Rajee</title>
+  <title>Admin Console — Abdullah Al Rajee</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0a0b0e" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="blog.css" />
 </head>
-<body class="admin-body">
+<body>
 
-  <!-- NAV -->
-  <nav id="navbar" class="scrolled">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>Rajee<span class="logo-bracket">/&gt;</span>
+  <!-- ── 1. GLOBAL ADMIN HEADER ──────────────────────────────────────────── -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-monogram">
+        <span>A. RAJEE</span>
+        <span class="brand-dot"></span>
       </a>
-      <div class="admin-nav-right">
-        <span class="admin-badge">Admin Panel</span>
-        <button class="btn btn-secondary btn-sm" id="logout-btn" style="display:none;">Logout</button>
+
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <span id="admin-user-badge" style="display:none; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">AUTHENTICATED</span>
+        
+        <a href="blog.html" class="nav-link" style="font-family:var(--font-mono); font-size:0.78rem;">Public Journal ↗</a>
+
+        <button id="theme-toggle-btn" class="theme-toggle-button" aria-label="Toggle Light/Dark Theme" title="Toggle Display Mode">
+          <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="moon-icon" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <button id="admin-logout-btn" class="btn-admin-action" style="display:none; padding:0.45rem 0.9rem;">
+          Sign Out
+        </button>
       </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen" class="admin-screen">
-    <div class="login-card">
-      <div class="login-icon">🔐</div>
-      <h1 class="login-title">Admin Login</h1>
-      <p class="login-subtitle">Sign in to manage your blog</p>
-      <form id="login-form" autocomplete="off">
-        <div class="form-group">
-          <label for="email-input">Email</label>
-          <input type="email" id="email-input" placeholder="your@email.com" required />
+  <!-- ── 2. ADMIN MAIN CONTAINER ─────────────────────────────────────────── -->
+  <main class="admin-view-wrapper">
+    <div class="site-wrapper">
+
+      <!-- SCREEN A: AUTHENTICATION / LOGIN -->
+      <div id="admin-login-panel" class="admin-login-layout">
+        <div class="admin-panel-header">
+          <span class="section-index">00 / AUTHENTICATION</span>
+          <h1 class="admin-panel-title">Admin Console</h1>
+          <p class="admin-panel-desc">Sign in with verified administrator credentials to compose and manage journal entries.</p>
         </div>
-        <div class="form-group">
-          <label for="password-input">Password</label>
-          <input type="password" id="password-input" placeholder="••••••••" required />
-        </div>
-        <div id="login-error" class="form-error" style="display:none;"></div>
-        <button type="submit" class="btn btn-primary btn-full" id="login-btn">
-          Sign In
-        </button>
-      </form>
-    </div>
-  </div>
 
-  <!-- ADMIN DASHBOARD -->
-  <div id="admin-screen" class="admin-screen" style="display:none;">
-    <div class="admin-container">
-
-      <!-- COMPOSE POST -->
-      <div class="admin-compose-card">
-        <h2 class="compose-title">✍️ Create New Post</h2>
-        <form id="post-form">
-          <div class="form-group">
-            <label for="post-title">Post Title</label>
-            <input type="text" id="post-title" placeholder="What's on your mind today?" maxlength="120" />
-          </div>
-          <div class="form-group">
-            <label for="post-body">Content</label>
-            <textarea id="post-body" rows="5" placeholder="Write your post, share your thoughts, update, or project progress..." maxlength="2000"></textarea>
-            <span class="char-count" id="char-count">0 / 2000</span>
+        <form id="admin-login-form">
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="login-email">Admin Email</label>
+            <input type="email" id="login-email" class="admin-input-control" placeholder="rajee0585@gmail.com" required autocomplete="email" />
           </div>
 
-          <!-- IMAGE UPLOAD -->
-          <div class="form-group">
-            <label>Photo (optional)</label>
-            <div class="image-upload-area" id="image-upload-area">
-              <input type="file" id="image-input" accept="image/*" hidden />
-              <div class="upload-placeholder" id="upload-placeholder">
-                <span class="upload-icon">📷</span>
-                <span>Click to add a photo</span>
-                <span class="upload-hint">JPEG, PNG, WEBP — auto-compressed</span>
-              </div>
-              <img id="image-preview" src="" alt="" style="display:none;" />
-              <button type="button" class="remove-image-btn" id="remove-image-btn" style="display:none;">✕ Remove</button>
-            </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="admin-input-control" placeholder="••••••••••••" required autocomplete="current-password" />
           </div>
 
-          <div id="post-error" class="form-error" style="display:none;"></div>
-          <button type="submit" class="btn btn-primary btn-full" id="post-btn">
-            🚀 Publish Post
+          <div id="login-error-banner" class="admin-alert-banner error"></div>
+
+          <button type="submit" id="btn-login-submit" class="btn-editorial btn-solid" style="width:100%;">
+            <span>AUTHENTICATE &amp; ENTER</span>
+            <span>→</span>
           </button>
         </form>
       </div>
 
-      <!-- POSTS LIST -->
-      <div class="admin-posts-section">
-        <h2 class="compose-title">📋 Your Posts</h2>
-        <div id="admin-posts-list">
-          <div class="posts-loading">Loading posts…</div>
+      <!-- SCREEN B: ACTIVE ADMIN DASHBOARD CONSOLE -->
+      <div id="admin-dashboard-panel" style="display:none;">
+        
+        <div class="section-label-bar">
+          <span class="section-index">ADMIN DASHBOARD · FIRESTORE SYNC</span>
+          <span id="admin-user-email-label" class="section-caption">AUTHENTICATED AS RAJEE</span>
         </div>
+
+        <div class="admin-console-grid">
+          
+          <!-- LEFT COLUMN: POST COMPOSER / EDITOR -->
+          <div class="admin-editor-column">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; border-bottom:1px solid var(--border-hairline); padding-bottom:0.75rem;">
+              <h2 id="composer-mode-title" class="admin-panel-title" style="font-size:1.35rem;">Compose Journal Entry</h2>
+              <button type="button" id="btn-cancel-edit" class="btn-admin-action" style="display:none;">Cancel Edit</button>
+            </div>
+
+            <form id="post-editor-form">
+              <!-- Hidden ID for edit mode -->
+              <input type="hidden" id="editing-post-id" value="" />
+
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="post-title-input">01 / Title</label>
+                <input type="text" id="post-title-input" class="admin-input-control" placeholder="e.g. Implementing Concurrency Locks in Relational Databases" required />
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="post-tag-input">02 / Category / Tag</label>
+                <input type="text" id="post-tag-input" class="admin-input-control" placeholder="e.g. SYSTEM ARCHITECTURE, ALGORITHMS, WEB3" />
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="post-body-input">03 / Entry Body (Markdown Supported)</label>
+                <textarea id="post-body-input" class="admin-input-control" placeholder="Write your technical article, insights, or project progress..." rows="8" required></textarea>
+                <span id="admin-char-counter" class="admin-char-meter">0 characters</span>
+              </div>
+
+              <!-- Visual Attachment / Cloudinary Upload -->
+              <div class="admin-form-group">
+                <label class="admin-form-label">04 / Visual Attachment (Optional)</label>
+                
+                <div id="admin-drop-zone" class="admin-upload-zone">
+                  <input type="file" id="file-input-control" accept="image/*" style="display:none;" />
+                  <p class="upload-zone-hint">
+                    <strong>Click or Drag an image here</strong> to upload via Cloudinary<br>
+                    <small style="opacity:0.65;">Supports PNG, JPG, WEBP</small>
+                  </p>
+                </div>
+
+                <!-- Or manual URL fallback -->
+                <div style="margin-top:0.75rem;">
+                  <input type="url" id="post-image-url-input" class="admin-input-control" placeholder="Or paste direct image URL (https://...)" style="font-size:0.8rem; padding:0.5rem 0.8rem;" />
+                </div>
+
+                <!-- Preview Box -->
+                <div id="admin-preview-container" class="admin-image-preview-box" style="display:none;">
+                  <img id="admin-preview-img" src="" alt="Preview Visual" />
+                  <button type="button" id="btn-remove-attachment" class="btn-remove-preview">✕ Remove Visual</button>
+                </div>
+              </div>
+
+              <div id="post-status-banner" class="admin-alert-banner"></div>
+
+              <button type="submit" id="btn-publish-submit" class="btn-editorial btn-solid" style="width:100%;">
+                <span id="btn-submit-label">PUBLISH JOURNAL ENTRY</span>
+                <span>→</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- RIGHT COLUMN: MANAGE PUBLISHED POSTS -->
+          <div class="admin-posts-column">
+            <div style="border-bottom:1px solid var(--border-hairline); padding-bottom:0.75rem;">
+              <h2 class="admin-panel-title" style="font-size:1.35rem;">Published Entries</h2>
+              <span id="admin-total-posts-count" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">0 ENTRIES IN FIRESTORE</span>
+            </div>
+
+            <div id="admin-entries-feed" style="display:flex; flex-direction:column; gap:1rem;">
+              <p style="color:var(--text-muted); font-family:var(--font-mono); font-size:0.85rem; padding:2rem 0; text-align:center;">Retrieving entries…</p>
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
     </div>
-  </div>
+  </main>
+
+  <!-- ── 3. FOOTER ───────────────────────────────────────────────────────── -->
+  <footer id="footer">
+    <div class="site-wrapper">
+      <div class="footer-inner-grid">
+        <div class="footer-brand-lockup">
+          <span class="footer-logo-title">ABDULLAH AL RAJEE</span>
+          <p class="footer-copy-text">&copy; <span id="current-year">2026</span> Abdullah Al Rajee · Admin Console Session.</p>
+        </div>
+
+        <nav class="footer-links-cluster" aria-label="Footer Navigation">
+          <a href="index.html" class="footer-link-item">Main Site</a>
+          <a href="blog.html" class="footer-link-item">Public Journal</a>
+          <a href="index.html#contact" class="footer-link-item">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js?v=3"></script>
-  <script src="admin.js?v=3"></script>
+  <script src="firebase-config.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>

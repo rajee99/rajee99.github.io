@@ -1,67 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog | Abdullah Al Rajee</title>
-  <meta name="description" content="Blog and updates by Abdullah Al Rajee — projects, thoughts, and tech insights." />
+  <title>Journal &amp; Technical Notes — Abdullah Al Rajee</title>
+  <meta name="description" content="Engineering notes, research essays, and technical observations by Abdullah Al Rajee." />
+  <meta property="og:title" content="Journal &amp; Technical Notes — Abdullah Al Rajee" />
+  <meta property="og:description" content="Engineering notes, research essays, and technical observations by Abdullah Al Rajee." />
+  <meta property="og:url" content="https://rajee99.github.io/blog.html" />
+  <meta name="theme-color" content="#0a0b0e" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="blog.css" />
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="navbar" class="scrolled">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>Rajee<span class="logo-bracket">/&gt;</span>
+  <!-- ── 1. GLOBAL HEADER ────────────────────────────────────────────────── -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-monogram">
+        <span>A. RAJEE</span>
+        <span class="brand-dot"></span>
       </a>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="index.html#about"     class="nav-link">About</a></li>
-        <li><a href="index.html#skills"    class="nav-link">Skills</a></li>
-        <li><a href="index.html#projects"  class="nav-link">Projects</a></li>
-        <li><a href="index.html#education" class="nav-link">Education</a></li>
-        <li><a href="blog.html"            class="nav-link active">Blog</a></li>
-        <li><a href="index.html#contact"   class="nav-link">Contact</a></li>
-      </ul>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
 
-  <!-- BLOG HEADER -->
-  <header class="blog-header">
-    <div class="container">
-      <span class="section-tag">updates & thoughts</span>
-      <h1 class="blog-page-title">My <span class="highlight">Blog</span></h1>
-      <p class="blog-page-subtitle">Projects, learnings, and things I find interesting.</p>
+      <nav class="nav-links" id="nav-links" aria-label="Main Navigation">
+        <a href="index.html#hero" class="nav-link">Index</a>
+        <a href="index.html#works" class="nav-link">Selected Work</a>
+        <a href="index.html#about" class="nav-link">About</a>
+        <a href="index.html#arsenal" class="nav-link">Arsenal</a>
+        <a href="index.html#education" class="nav-link">Background</a>
+        <a href="blog.html" class="nav-link active">Journal</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="theme-toggle-button" aria-label="Toggle Light/Dark Theme" title="Toggle Display Mode">
+          <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="moon-icon" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <button class="mobile-menu-trigger" id="mobile-menu-trigger" aria-label="Toggle Navigation Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- POSTS FEED -->
-  <main class="blog-main">
-    <div class="blog-container">
-      <div id="posts-feed">
-        <div class="feed-loading">
-          <div class="spinner"></div>
-          <span>Loading posts…</span>
+  <!-- ── 2. JOURNAL FEED VIEW (DEFAULT) ──────────────────────────────────── -->
+  <div id="journal-feed-view">
+    
+    <!-- Hero Header -->
+    <section class="journal-header-section">
+      <div class="site-wrapper">
+        <div class="section-label-bar">
+          <span class="section-index">JOURNAL &amp; TECHNICAL NOTES</span>
+          <span class="section-caption">BY ABDULLAH AL RAJEE</span>
         </div>
+        
+        <h1 class="journal-hero-headline">
+          <span>ENGINEERING NOTES,</span><br>
+          <span class="title-muted">RESEARCH &amp; ESSAYS.</span>
+        </h1>
+        
+        <p class="journal-hero-desc">
+          Reflections on database internals, decentralized protocols, machine learning implementations, and software craft.
+        </p>
       </div>
-      <div id="no-posts" style="display:none;" class="no-posts">
-        <div class="no-posts-icon">📝</div>
-        <p>No posts yet — check back soon!</p>
-      </div>
-    </div>
-  </main>
+    </section>
 
-  <!-- FOOTER -->
+    <!-- Main Feed Body -->
+    <main class="journal-body-section">
+      <div class="site-wrapper">
+        
+        <!-- Loading State -->
+        <div id="feed-loading" class="feed-loading-state">
+          <div class="feed-spinner"></div>
+          <p class="feed-state-title">Retrieving Journal Entries from Firestore…</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="feed-empty" class="feed-empty-state" style="display:none;">
+          <p class="feed-state-title">No entries published yet · Check back shortly</p>
+        </div>
+
+        <!-- Populated Grid -->
+        <div id="feed-content" class="journal-feed-grid" style="display:none;">
+          
+          <!-- Featured Latest Post (Rendered dynamically) -->
+          <div id="featured-post-container"></div>
+
+          <!-- Secondary Notes Stream -->
+          <div id="secondary-notes-section" style="display:none;">
+            <div class="notes-section-header">
+              <span class="notes-section-title">ALL NOTES &amp; ARCHIVE</span>
+              <span id="notes-count-tag" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">0 ENTRIES</span>
+            </div>
+            <div id="notes-stream-container" class="notes-stream"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ── 3. SINGLE ARTICLE READER VIEW ────────────────────────────────────── -->
+  <article id="article-reader-view">
+    <div class="article-reader-container">
+      
+      <!-- Back Breadcrumb Button -->
+      <div class="reader-breadcrumb-nav">
+        <button id="btn-back-to-journal" class="btn-back-journal">
+          <span>←</span>
+          <span>BACK TO JOURNAL INDEX</span>
+        </button>
+      </div>
+
+      <!-- Article Header -->
+      <header class="article-meta-header">
+        <div class="post-meta-line">
+          <span id="article-tag" class="post-tag-badge">TECHNICAL NOTE</span>
+          <span class="post-meta-dot"></span>
+          <span id="article-date">PUBLISHED DATE</span>
+          <span class="post-meta-dot"></span>
+          <span id="article-read-time">3 MIN READ</span>
+        </div>
+
+        <h1 id="article-title" class="article-headline-title">Article Title</h1>
+
+        <div class="article-byline-bar">
+          <div>
+            <span>WRITTEN BY </span>
+            <span class="article-author-tag">ABDULLAH AL RAJEE</span>
+          </div>
+          <button id="btn-share-post" class="editorial-text-link" style="background:transparent; border:none; cursor:pointer;">
+            <span>Copy Link</span> <span class="arrow-glyph">↗</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Featured Image Slot (if post contains an image) -->
+      <div id="article-hero-image-box" class="article-featured-hero-image" style="display:none;">
+        <img id="article-hero-img" src="" alt="Article hero visual" />
+      </div>
+
+      <!-- Prose Content -->
+      <div id="article-content-body" class="article-prose-body">
+        <!-- Post content rendered here -->
+      </div>
+
+      <!-- Adjacent Post Navigation Footer -->
+      <footer class="article-navigation-footer">
+        <div id="nav-prev-post" class="nav-adjacent-post" style="visibility:hidden;">
+          <span class="nav-adjacent-label">← PREVIOUS NOTE</span>
+          <a href="#" id="prev-post-link" class="nav-adjacent-title">Previous Article Title</a>
+        </div>
+
+        <div id="nav-next-post" class="nav-adjacent-post" style="visibility:hidden; text-align:right;">
+          <span class="nav-adjacent-label">NEXT NOTE →</span>
+          <a href="#" id="next-post-link" class="nav-adjacent-title">Next Article Title</a>
+        </div>
+      </footer>
+
+    </div>
+  </article>
+
+  <!-- ── 4. GLOBAL FOOTER ────────────────────────────────────────────────── -->
   <footer id="footer">
-    <div class="container">
-      <p class="footer-text">Designed & Built by <span class="accent">Abdullah Al Rajee</span></p>
-      <p class="footer-sub">© 2025 · All rights reserved</p>
+    <div class="site-wrapper">
+      <div class="footer-inner-grid">
+        <div class="footer-brand-lockup">
+          <span class="footer-logo-title">ABDULLAH AL RAJEE</span>
+          <p class="footer-copy-text">&copy; <span id="current-year">2026</span> Abdullah Al Rajee · Designed &amp; engineered with precision.</p>
+        </div>
+
+        <nav class="footer-links-cluster" aria-label="Footer Navigation">
+          <a href="index.html#hero" class="footer-link-item">Portfolio</a>
+          <a href="index.html#works" class="footer-link-item">Selected Work</a>
+          <a href="index.html#about" class="footer-link-item">About</a>
+          <a href="index.html#arsenal" class="footer-link-item">Arsenal</a>
+          <a href="blog.html" class="footer-link-item">Journal</a>
+          <a href="admin.html" class="footer-link-item">Admin Access ↗</a>
+          <a href="index.html#contact" class="footer-link-item">Contact</a>
+        </nav>
+      </div>
     </div>
   </footer>
 
