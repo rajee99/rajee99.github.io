@@ -1,41 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abdullah Al Rajee — Software Engineer</title>
-  <meta name="description" content="Portfolio of Abdullah Al Rajee — CS & Engineering student at UIU specializing in full-stack web platforms, blockchain systems, and AI applications." />
+  <title>Abdullah Al Rajee — Personal Digital Identity</title>
+  <meta name="description" content="Personal digital identity of Abdullah Al Rajee — Software Engineer & CS undergraduate at United International University (UIU), Dhaka." />
   <meta property="og:title" content="Abdullah Al Rajee — Software Engineer" />
-  <meta property="og:description" content="CS & Engineering student at UIU specializing in full-stack web platforms, blockchain systems, and AI applications." />
+  <meta property="og:description" content="Software Engineer & CS undergraduate building full-stack platforms, blockchain protocols, and algorithmic systems." />
   <meta property="og:url" content="https://rajee99.github.io" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <meta name="theme-color" content="#0a0b0e" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ── NAVIGATION ───────────────────────────────────────── -->
-  <nav id="nav">
-    <div class="nav-inner">
-      <a href="#hero" class="nav-logo">
-        <span class="bracket">&lt;</span>Rajee<span class="bracket">/&gt;</span>
+  <!-- ── 1. GLOBAL HEADER ────────────────────────────────────────────────── -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="#hero" class="brand-monogram">
+        <span>A. RAJEE</span>
+        <span class="brand-dot"></span>
       </a>
 
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+      <nav class="nav-links" id="nav-links" aria-label="Main Navigation">
+        <a href="#hero" class="nav-link">Index</a>
+        <a href="#works" class="nav-link">Selected Work</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#arsenal" class="nav-link">Arsenal</a>
+        <a href="#education" class="nav-link">Background</a>
+        <a href="blog.html" class="nav-link">Journal</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
 
-      <div class="nav-actions">
-        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
-          <svg id="theme-icon-sun" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="theme-toggle-button" aria-label="Toggle Light/Dark Theme" title="Toggle Display Mode">
+          <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -46,535 +48,535 @@
             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
           </svg>
-          <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg id="moon-icon" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
 
-        <a href="#contact" class="nav-cta">Get in Touch</a>
-
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <button class="mobile-menu-trigger" id="mobile-menu-trigger" aria-label="Toggle Navigation Menu">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- ── HERO SECTION ─────────────────────────────────────── -->
-  <section id="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="status-badge">
-          <span class="status-dot"></span>
-          <span>Available for software engineering roles &amp; projects</span>
+  <!-- ── 2. HERO SECTION — HIGH IMPACT EDITORIAL ──────────────────────────── -->
+  <section id="hero" class="editorial-section">
+    <div class="site-wrapper">
+      
+      <!-- Top Eyebrow Meta -->
+      <div class="hero-meta-header reveal-entry">
+        <div class="availability-tag">
+          <span class="live-pulse-dot"></span>
+          <span>AVAILABLE FOR SOFTWARE ENGINEERING &amp; RESEARCH</span>
         </div>
-
-        <h1 class="hero-headline">
-          Abdullah Al Rajee
-        </h1>
-
-        <div class="hero-typewriter-row">
-          <span>Architecting </span>
-          <span id="typewriter" class="typewriter-target"></span><span class="cursor">|</span>
-        </div>
-
-        <p class="hero-bio">
-          Computer Science &amp; Engineering student at <strong>United International University</strong>. Focused on developing robust full-stack platforms, distributed blockchain protocols, and intelligent software systems with high algorithmic precision.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">
-            Explore Selected Works ↓
-          </a>
-          <button class="btn btn-secondary" id="hero-copy-email" data-email="rajee0585@gmail.com">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            <span>Copy Email</span>
-          </button>
-        </div>
-
-        <div class="hero-footer-bar">
-          <div class="social-links">
-            <a href="https://github.com/rajee99" target="_blank" rel="noopener" class="social-link-item" title="GitHub Profile">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              <span>github.com/rajee99</span>
-            </a>
-            <a href="https://linkedin.com/in/al-rajee05" target="_blank" rel="noopener" class="social-link-item" title="LinkedIn Profile">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-              <span>linkedin.com/in/al-rajee05</span>
-            </a>
-          </div>
-
-          <div class="live-time-indicator">
-            <span>Dhaka (UTC+6):</span>
-            <span id="live-clock" style="font-weight:600; color:var(--text-primary);">--:--:--</span>
-          </div>
+        <div class="hero-coordinates">
+          <span>DHAKA, BANGLADESH · 23.8103° N, 90.4125° E</span>
         </div>
       </div>
+
+      <!-- Dominant Editorial Headline -->
+      <h1 class="hero-name-headline reveal-entry" style="transition-delay: 0.08s;">
+        <span class="name-row">ABDULLAH</span>
+        <span class="name-row name-muted">AL RAJEE</span>
+      </h1>
+
+      <!-- 12-Column Hero Structure -->
+      <div class="hero-editorial-grid reveal-entry" style="transition-delay: 0.15s;">
+        
+        <!-- Left: Core Positioning Narrative -->
+        <div class="hero-positioning-block">
+          <p class="positioning-statement">
+            Software engineer &amp; Computer Science undergraduate at <strong>United International University</strong>. Architecting full-stack web platforms, decentralized blockchain protocols, and low-latency algorithmic solutions.
+          </p>
+          <p class="positioning-bio">
+            Grounded in core algorithms, systems design, and relational database internals. Dedicated to building reliable, high-throughput software where architectural rigor and clean execution meet real-world utility.
+          </p>
+          <div class="hero-action-cluster">
+            <a href="#works" class="btn-editorial btn-solid">
+              <span>EXPLORE SELECTED WORK</span>
+              <span>↓</span>
+            </a>
+            <button class="btn-editorial btn-outline" id="hero-quick-copy" data-copy="rajee0585@gmail.com">
+              <span>COPY EMAIL</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Technical Metadata & Understated Links -->
+        <div class="hero-metadata-column">
+          <div class="meta-item">
+            <span class="meta-item-label">01 / Focus Areas</span>
+            <span class="meta-item-value">Full-Stack Platforms · Web3 · Algorithms</span>
+            <span class="meta-item-sub">Distributed database design &amp; applied ML</span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-item-label">02 / Academic Affiliation</span>
+            <span class="meta-item-value">BSc in Computer Science &amp; Engineering</span>
+            <span class="meta-item-sub">United International University (UIU)</span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-item-label">03 / Verified Channels</span>
+            <div class="meta-links-row">
+              <a href="https://github.com/rajee99" target="_blank" rel="noopener" class="editorial-text-link">
+                <span>GitHub</span>
+                <span class="arrow-glyph">↗</span>
+              </a>
+              <a href="https://linkedin.com/in/al-rajee05" target="_blank" rel="noopener" class="editorial-text-link">
+                <span>LinkedIn</span>
+                <span class="arrow-glyph">↗</span>
+              </a>
+              <a href="mailto:rajee0585@gmail.com" class="editorial-text-link">
+                <span>Email</span>
+                <span class="arrow-glyph">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </section>
 
-  <!-- ── STATS STRIP ──────────────────────────────────────── -->
-  <div class="container">
-    <div class="stats-strip reveal">
-      <div class="stat-box">
-        <div class="stat-val" data-target="5">0</div>
-        <div class="stat-desc">Featured Projects</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val" data-target="5">0</div>
-        <div class="stat-desc">Core Languages</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val" data-target="8">0</div>
-        <div class="stat-desc">Frameworks &amp; DBs</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val">3+</div>
-        <div class="stat-desc">Years Engineering</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── ABOUT SECTION ────────────────────────────────────── -->
-  <section id="about" class="section section-surface">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">01 / Profile</span>
-        <h2 class="section-title">About Me</h2>
-        <p class="section-subtitle">Engineering foundations, engineering philosophy, and problem-solving methodology.</p>
+  <!-- ── 3. SELECTED WORK — CURATED ART-DIRECTED CASE STUDIES ──────────────── -->
+  <section id="works" class="editorial-section">
+    <div class="site-wrapper">
+      
+      <div class="section-label-bar">
+        <span class="section-index">01 / SELECTED WORK</span>
+        <span class="section-caption">CURATED ENGINEERING PROJECTS</span>
       </div>
 
-      <div class="about-grid">
-        <div class="about-text reveal">
-          <p>
-            I am a <strong>Computer Science &amp; Engineering undergraduate</strong> at United International University (UIU), Dhaka. My work focuses on constructing clean, resilient software systems across full-stack web applications, database architectures, and decentralized protocols.
-          </p>
-          <p>
-            With a solid grounding in <strong>Data Structures &amp; Algorithms</strong> and relational database internals (including concurrency control, indexing, and transactional integrity), I approach every problem with an emphasis on low complexity, high maintainability, and clean architecture.
-          </p>
-          <p>
-            Beyond coursework and client builds, I actively solve algorithmic challenges on Codeforces, implement foundational AI algorithms in Python, and contribute to open-source developer tooling.
-          </p>
-        </div>
+      <div class="works-container">
 
-        <div class="about-terminal reveal" style="transition-delay:0.1s;">
-          <div class="terminal-header">
-            <div class="terminal-dots">
-              <span></span><span></span><span></span>
-            </div>
-            <span class="terminal-title">rajee@workstation ~</span>
-            <span></span>
+        <!-- FEATURED 01: EMERGENCY 999 -->
+        <article class="project-feature reveal-entry" id="work-emergency">
+          <div class="project-narrative-col">
+            <span class="project-num-badge">01.01 — RELATIONAL DBMS &amp; REAL-TIME COORDINATION</span>
+            <h2 class="project-headline-title">Emergency 999 Dispatch System</h2>
+            <p class="project-editorial-category">Real-Time Incident Reporting, Automated Nearest-Unit Routing &amp; High-Concurrency DBMS</p>
+            <p class="project-synopsis">
+              A mission-critical emergency management platform built to coordinate Bangladesh's national incident response. Allows citizens to log real-time emergencies on dynamic maps, automatically calculating nearest active units while preventing race conditions through robust database transaction locks.
+            </p>
+            <ul class="project-architectural-points">
+              <li>Engineered an 8-table relational schema with strict role-based access for Citizens, Unit Commanders, and Regional Operators.</li>
+              <li>Integrated Haversine geospatial proximity routing algorithms and 5 InnoDB MySQL triggers to guarantee atomicity during simultaneous dispatches.</li>
+              <li>Constructed live Leaflet.js interactive maps with sub-second polling updates and incident status transitions.</li>
+            </ul>
           </div>
-          <div class="terminal-body">
-            <div class="terminal-line">
-              <span class="terminal-prompt">$</span> <span>whoami</span>
-            </div>
-            <div class="terminal-output">
-              Abdullah Al Rajee &lt;Software Engineer / CS Student&gt;
-            </div>
-            <div class="terminal-line" style="margin-top:0.75rem;">
-              <span class="terminal-prompt">$</span> <span>cat focus.json</span>
-            </div>
-            <div class="terminal-output">
-              {<br />
-              &nbsp;&nbsp;"location": "Dhaka, Bangladesh",<br />
-              &nbsp;&nbsp;"institution": "United International University",<br />
-              &nbsp;&nbsp;"interests": ["Full-Stack", "Distributed Systems", "AI", "Algorithms"],<br />
-              &nbsp;&nbsp;"status": "Seeking Software Engineering Roles"<br />
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ── SELECTED PROJECTS ────────────────────────────────── -->
-  <section id="projects" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">02 / Selected Works</span>
-        <h2 class="section-title">Featured Projects</h2>
-        <p class="section-subtitle">A curated index of production-ready systems, database platforms, and research prototypes.</p>
-      </div>
-
-      <div class="projects-list">
-
-        <!-- Project 01 -->
-        <article class="project-item reveal" id="project-emergency">
-          <div class="project-top-meta">
-            <span class="project-idx">01</span>
-            <span class="project-tag-pill">Relational DBMS &amp; Real-Time</span>
-          </div>
-          <h3 class="project-title">Emergency 999</h3>
-          <p class="project-subtitle">Real-Time National Emergency Incident Dispatch System</p>
-          <p class="project-description">
-            A mission-critical emergency dispatch and coordination platform enabling citizens across Bangladesh to report live distress incidents on an interactive map. Features automated unit dispatch algorithms, geospatial routing, and pessimistic concurrency management for high-load operational stability.
-          </p>
-          <ul class="project-highlights">
-            <li>Engineered an 8-table relational schema with role-based access control (Citizen, Operator, Unit Commander, Admin).</li>
-            <li>Implemented Haversine-formula nearest-responder routing and 5 MySQL triggers to eliminate dispatch race conditions.</li>
-            <li>Built real-time incident geo-mapping using Leaflet.js and responsive asynchronous dispatch updating.</li>
-          </ul>
-          <div class="project-footer-row">
-            <div class="project-tech-stack">
-              <span class="tech-badge">PHP</span>
-              <span class="tech-badge">MySQL</span>
-              <span class="tech-badge">InnoDB</span>
-              <span class="tech-badge">Leaflet.js</span>
-              <span class="tech-badge">REST API</span>
-            </div>
-            <a href="https://github.com/rajee99/bettu999" target="_blank" rel="noopener" class="project-link-btn">
-              <span>View Source</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Project 02 -->
-        <article class="project-item reveal" id="project-ripplechain" style="transition-delay:0.08s;">
-          <div class="project-top-meta">
-            <span class="project-idx">02</span>
-            <span class="project-tag-pill">Web3 &amp; Social Impact</span>
-          </div>
-          <h3 class="project-title">RippleChain</h3>
-          <p class="project-subtitle">Blockchain Land Registry &amp; Compensation for Climate Refugees</p>
-          <p class="project-description">
-            A decentralized platform designed to protect property rights for climate-displaced citizens in river-erosion zones across Bangladesh. Provides tamper-proof deed recordation, cryptographic community validation, and direct automated compensation mechanisms.
-          </p>
-          <ul class="project-highlights">
-            <li>Developed immutable land title registry contracts ensuring non-repudiation of historical property claims.</li>
-            <li>Constructed transparent multi-party validator voting for displacement verification and relief fund distribution.</li>
-            <li>Designed a high-contrast, accessible web interface for rapid citizen onboarding and deed lookup.</li>
-          </ul>
-          <div class="project-footer-row">
-            <div class="project-tech-stack">
-              <span class="tech-badge">Solidity</span>
-              <span class="tech-badge">Smart Contracts</span>
-              <span class="tech-badge">Web3.js</span>
-              <span class="tech-badge">Ethereum</span>
-              <span class="tech-badge">JavaScript</span>
-            </div>
-            <a href="https://github.com/rajee99/ripplechain" target="_blank" rel="noopener" class="project-link-btn">
-              <span>View Source</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Project 03 -->
-        <article class="project-item reveal" id="project-varsity" style="transition-delay:0.12s;">
-          <div class="project-top-meta">
-            <span class="project-idx">03</span>
-            <span class="project-tag-pill">Systems &amp; OOP</span>
-          </div>
-          <h3 class="project-title">Varsity-Progress</h3>
-          <p class="project-subtitle">Comprehensive Java Enterprise Architecture &amp; OOP Suite</p>
-          <p class="project-description">
-            A comprehensive repository spanning 50+ modules demonstrating core Object-Oriented Programming, GUI development with Swing, multithreaded process execution, custom data structure implementations, and structured design patterns.
-          </p>
-          <div class="project-footer-row">
-            <div class="project-tech-stack">
-              <span class="tech-badge">Java</span>
-              <span class="tech-badge">Swing GUI</span>
-              <span class="tech-badge">Multithreading</span>
-              <span class="tech-badge">OOP</span>
-              <span class="tech-badge">File I/O</span>
-            </div>
-            <a href="https://github.com/rajee99/Varsity-Progress" target="_blank" rel="noopener" class="project-link-btn">
-              <span>View Source</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Project 04 -->
-        <article class="project-item reveal" id="project-dsa" style="transition-delay:0.16s;">
-          <div class="project-top-meta">
-            <span class="project-idx">04</span>
-            <span class="project-tag-pill">Algorithms &amp; Problem Solving</span>
-          </div>
-          <h3 class="project-title">DSA &amp; Competitive Programming</h3>
-          <p class="project-subtitle">Algorithmic Problem Solutions &amp; Data Structures Repository</p>
-          <p class="project-description">
-            Production-grade implementations of fundamental algorithms (graph traversal, dynamic programming, tree algorithms, sorting networks) alongside tested problem solutions from Codeforces and competitive programming contests.
-          </p>
-          <div class="project-footer-row">
-            <div class="project-tech-stack">
-              <span class="tech-badge">C++</span>
-              <span class="tech-badge">Python</span>
-              <span class="tech-badge">Data Structures</span>
-              <span class="tech-badge">Algorithms</span>
-            </div>
-            <a href="https://github.com/rajee99/DSA" target="_blank" rel="noopener" class="project-link-btn">
-              <span>View Source</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Project 05 -->
-        <article class="project-item reveal" id="project-ai" style="transition-delay:0.2s;">
-          <div class="project-top-meta">
-            <span class="project-idx">05</span>
-            <span class="project-tag-pill">Machine Learning &amp; AI</span>
-          </div>
-          <h3 class="project-title">AI Fundamentals</h3>
-          <p class="project-subtitle">Applied Machine Learning &amp; Neural Algorithm Implementations</p>
-          <p class="project-description">
-            Hands-on machine learning implementations exploring regression, classification models, clustering algorithms, and neural network basics using Python mathematical foundations.
-          </p>
-          <div class="project-footer-row">
-            <div class="project-tech-stack">
-              <span class="tech-badge">Python</span>
-              <span class="tech-badge">Scikit-Learn</span>
-              <span class="tech-badge">NumPy</span>
-              <span class="tech-badge">Machine Learning</span>
-            </div>
-            <a href="https://github.com/rajee99/AI_Fundamentals" target="_blank" rel="noopener" class="project-link-btn">
-              <span>View Source</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-            </a>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── TECHNICAL ARSENAL / SKILLS ───────────────────────── -->
-  <section id="skills" class="section section-surface">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">03 / Capabilities</span>
-        <h2 class="section-title">Technical Skills</h2>
-        <p class="section-subtitle">Languages, runtime environments, frameworks, databases, and engineering domains.</p>
-      </div>
-
-      <div class="skills-grid reveal">
-        <!-- Category 1 -->
-        <div class="skill-category-card">
-          <h3 class="category-title">Programming Languages</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">C</span>
-            <span class="skill-tag">C++</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">PHP</span>
-            <span class="skill-tag">Solidity</span>
-          </div>
-        </div>
-
-        <!-- Category 2 -->
-        <div class="skill-category-card">
-          <h3 class="category-title">Web &amp; Frameworks</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">Node.js</span>
-            <span class="skill-tag">Express</span>
-            <span class="skill-tag">HTML5</span>
-            <span class="skill-tag">CSS3</span>
-            <span class="skill-tag">Tailwind CSS</span>
-            <span class="skill-tag">REST APIs</span>
-          </div>
-        </div>
-
-        <!-- Category 3 -->
-        <div class="skill-category-card">
-          <h3 class="category-title">Databases &amp; Storage</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">MySQL</span>
-            <span class="skill-tag">MongoDB</span>
-            <span class="skill-tag">Firebase Firestore</span>
-            <span class="skill-tag">Relational Design</span>
-            <span class="skill-tag">Indexing &amp; Triggers</span>
-          </div>
-        </div>
-
-        <!-- Category 4 -->
-        <div class="skill-category-card">
-          <h3 class="category-title">Tools &amp; Infrastructure</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Git</span>
-            <span class="skill-tag">GitHub</span>
-            <span class="skill-tag">Linux / Bash</span>
-            <span class="skill-tag">VS Code</span>
-            <span class="skill-tag">Postman</span>
-            <span class="skill-tag">Docker</span>
-          </div>
-        </div>
-
-        <!-- Category 5 -->
-        <div class="skill-category-card">
-          <h3 class="category-title">Core Disciplines</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Data Structures &amp; Algorithms</span>
-            <span class="skill-tag">Object-Oriented Design</span>
-            <span class="skill-tag">Blockchain &amp; Smart Contracts</span>
-            <span class="skill-tag">Machine Learning Basics</span>
-            <span class="skill-tag">Database Transactions</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── EDUCATION & JOURNEY ──────────────────────────────── -->
-  <section id="education" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">04 / Journey</span>
-        <h2 class="section-title">Education &amp; Background</h2>
-        <p class="section-subtitle">Academic foundations and credentials.</p>
-      </div>
-
-      <div class="timeline reveal">
-        <!-- Item 1 -->
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <span class="timeline-date">June 2022 — Present</span>
-          <h3 class="timeline-degree">Bachelor of Science in Computer Science &amp; Engineering</h3>
-          <p class="timeline-inst">United International University (UIU), Dhaka, Bangladesh</p>
-          <p class="timeline-desc">
-            Rigorous curriculum covering Data Structures, Algorithms, Operating Systems, Database Management Systems, Computer Networks, Software Engineering, and Object-Oriented Programming.
-          </p>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <span class="timeline-date">May 2018 — January 2021</span>
-          <h3 class="timeline-degree">Higher Secondary Certificate (HSC) — Science</h3>
-          <p class="timeline-inst">Milestone College, Dhaka, Bangladesh</p>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <span class="timeline-date">Graduated 2018</span>
-          <h3 class="timeline-degree">Secondary School Certificate (SSC) — Science</h3>
-          <p class="timeline-inst">Adamjee Cantonment Public School, Dhaka, Bangladesh</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CONTACT ──────────────────────────────────────────── -->
-  <section id="contact" class="section section-surface">
-    <div class="container">
-      <div class="section-header">
-        <span class="eyebrow">05 / Initiate Dialogue</span>
-        <h2 class="section-title">Get In Touch</h2>
-        <p class="section-subtitle">Available for software engineering roles, project development, and technical collaboration.</p>
-      </div>
-
-      <div class="contact-grid">
-        <div class="contact-info-text reveal">
-          <p>
-            Whether you are discussing a software engineering vacancy, looking to collaborate on a full-stack platform, or want to explore blockchain/AI systems — I am always interested in discussing impactful technical challenges.
-          </p>
-
-          <div class="contact-direct-cards">
-            <div class="contact-direct-card">
-              <div class="contact-direct-left">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                <div>
-                  <div class="contact-direct-label">Email</div>
-                  <div class="contact-direct-val">rajee0585@gmail.com</div>
-                </div>
+          <div class="project-metadata-col">
+            <div class="tech-spec-group">
+              <span class="tech-spec-label">Architecture &amp; Stack</span>
+              <div class="tech-stack-pills">
+                <span class="editorial-tech-tag">PHP</span>
+                <span class="editorial-tech-tag">MySQL</span>
+                <span class="editorial-tech-tag">InnoDB Locking</span>
+                <span class="editorial-tech-tag">Leaflet.js</span>
+                <span class="editorial-tech-tag">REST APIs</span>
+                <span class="editorial-tech-tag">Geospatial</span>
               </div>
-              <button class="copy-btn" data-email="rajee0585@gmail.com">Copy</button>
             </div>
 
-            <div class="contact-direct-card">
-              <div class="contact-direct-left">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                <div>
-                  <div class="contact-direct-label">GitHub</div>
-                  <div class="contact-direct-val">github.com/rajee99</div>
-                </div>
-              </div>
-              <a href="https://github.com/rajee99" target="_blank" rel="noopener" class="copy-btn">Open ↗</a>
+            <div class="tech-spec-group">
+              <span class="tech-spec-label">Domain</span>
+              <span style="font-size:0.9rem; color:var(--text-primary); font-weight:600;">Emergency Infrastructure · Concurrent Systems</span>
             </div>
 
-            <div class="contact-direct-card">
-              <div class="contact-direct-left">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                <div>
-                  <div class="contact-direct-label">LinkedIn</div>
-                  <div class="contact-direct-val">linkedin.com/in/al-rajee05</div>
-                </div>
+            <div class="project-external-action">
+              <a href="https://github.com/rajee99/bettu999" target="_blank" rel="noopener" class="editorial-text-link" style="font-size:0.9rem; color:var(--text-primary);">
+                <span>View Source Repository</span>
+                <span class="arrow-glyph">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- FEATURED 02: RIPPLECHAIN -->
+        <article class="project-feature reveal-entry" id="work-ripplechain">
+          <div class="project-narrative-col">
+            <span class="project-num-badge">01.02 — DECENTRALIZED PROTOCOLS &amp; SOCIAL IMPACT</span>
+            <h2 class="project-headline-title">RippleChain</h2>
+            <p class="project-editorial-category">Blockchain Land Title Registry &amp; Climate Refugee Compensation Infrastructure</p>
+            <p class="project-synopsis">
+              A decentralized smart contract protocol safeguarding property ownership rights for climate-displaced citizens in Bangladesh riverbank erosion zones. Provides tamper-proof deed recordation, cryptographic community validation, and direct automated compensation mechanisms.
+            </p>
+            <ul class="project-architectural-points">
+              <li>Designed Solidity smart contracts establishing immutable land deed provenance and non-repudiation of ancestral claims.</li>
+              <li>Implemented decentralized multi-sig community validation mechanisms for transparent relief distribution without intermediaries.</li>
+              <li>Engineered high-contrast web3 user interfaces for seamless document verification and transparent blockchain auditing.</li>
+            </ul>
+          </div>
+
+          <div class="project-metadata-col">
+            <div class="tech-spec-group">
+              <span class="tech-spec-label">Architecture &amp; Stack</span>
+              <div class="tech-stack-pills">
+                <span class="editorial-tech-tag">Solidity</span>
+                <span class="editorial-tech-tag">Ethereum</span>
+                <span class="editorial-tech-tag">Web3.js</span>
+                <span class="editorial-tech-tag">Smart Contracts</span>
+                <span class="editorial-tech-tag">JavaScript</span>
               </div>
-              <a href="https://linkedin.com/in/al-rajee05" target="_blank" rel="noopener" class="copy-btn">Open ↗</a>
+            </div>
+
+            <div class="tech-spec-group">
+              <span class="tech-spec-label">Domain</span>
+              <span style="font-size:0.9rem; color:var(--text-primary); font-weight:600;">Decentralized Ledgers · Climate Resilience</span>
+            </div>
+
+            <div class="project-external-action">
+              <a href="https://github.com/rajee99/ripplechain" target="_blank" rel="noopener" class="editorial-text-link" style="font-size:0.9rem; color:var(--text-primary);">
+                <span>View Source Repository</span>
+                <span class="arrow-glyph">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- SECONDARY COMPACT CURATED GRID -->
+      <div class="compact-projects-grid">
+        
+        <!-- COMPACT 03: VARSITY-PROGRESS -->
+        <div class="compact-project-card reveal-entry">
+          <div class="compact-card-top">
+            <span class="project-num-badge">01.03 — OOP &amp; MULTITHREADING</span>
+            <h3 class="compact-title">Varsity-Progress Java Suite</h3>
+            <span class="project-editorial-category">Core Java, Swing GUI &amp; Systems Architecture</span>
+            <p class="compact-desc">
+              50+ module engineering repository exploring OOP patterns, GUI creation, multithreaded processing, memory safety, and thread-safe data structures.
+            </p>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-hairline); padding-top:1rem; margin-top:1.5rem;">
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Java · Swing · Multithreading</span>
+            <a href="https://github.com/rajee99/Varsity-Progress" target="_blank" rel="noopener" class="editorial-text-link">
+              <span>Source</span> <span class="arrow-glyph">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- COMPACT 04: DSA REPOSITORY -->
+        <div class="compact-project-card reveal-entry" style="transition-delay:0.08s;">
+          <div class="compact-card-top">
+            <span class="project-num-badge">01.04 — ALGORITHMIC RIGOR</span>
+            <h3 class="compact-title">DSA &amp; Competitive Engineering</h3>
+            <span class="project-editorial-category">Graph Theory, Dynamic Programming &amp; Codeforces</span>
+            <p class="compact-desc">
+              Comprehensive implementation of foundational algorithms, asymptotic complexity analysis, and tested competitive programming problem sets in C++ and Python.
+            </p>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-hairline); padding-top:1rem; margin-top:1.5rem;">
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">C++ · Python · Algorithms</span>
+            <a href="https://github.com/rajee99/DSA" target="_blank" rel="noopener" class="editorial-text-link">
+              <span>Source</span> <span class="arrow-glyph">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- COMPACT 05: AI FUNDAMENTALS -->
+        <div class="compact-project-card reveal-entry" style="grid-column: 1 / -1;">
+          <div class="compact-card-top">
+            <span class="project-num-badge">01.05 — INTELLIGENT SYSTEMS</span>
+            <h3 class="compact-title">AI Fundamentals &amp; Machine Learning</h3>
+            <span class="project-editorial-category">Statistical Learning, Regression Models &amp; Neural Implementations</span>
+            <p class="compact-desc">
+              Implementation of core machine learning algorithms from mathematical principles in Python, covering gradient descent, regression analysis, clustering models, and foundational artificial intelligence architectures.
+            </p>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-hairline); padding-top:1rem; margin-top:1.5rem;">
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Python · Scikit-Learn · NumPy · Applied ML</span>
+            <a href="https://github.com/rajee99/AI_Fundamentals" target="_blank" rel="noopener" class="editorial-text-link">
+              <span>Source</span> <span class="arrow-glyph">↗</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 4. ABOUT & ENGINEERING PHILOSOPHY ─────────────────────────────────── -->
+  <section id="about" class="editorial-section">
+    <div class="site-wrapper">
+      
+      <div class="section-label-bar">
+        <span class="section-index">02 / PROFILE &amp; PHILOSOPHY</span>
+        <span class="section-caption">ENGINEERING IDENTITY</span>
+      </div>
+
+      <div class="about-split-layout">
+        
+        <!-- Left: Narrative Text -->
+        <div class="about-narrative-panel reveal-entry">
+          <h2 class="about-headline">
+            Building software with low cognitive overhead, high structural integrity, and computational precision.
+          </h2>
+          <p class="about-paragraph">
+            I am Abdullah Al Rajee, an undergraduate in <strong>Computer Science &amp; Engineering</strong> at United International University, Dhaka. My work focuses on building full-stack platforms, database architectures, and distributed protocols.
+          </p>
+          <p class="about-paragraph">
+            I approach engineering through the lens of fundamentals: understanding memory allocation, relational transactions, algorithmic time-space complexity, and concurrency. I believe software should be built deliberately, prioritizing maintainability and clean abstractions over fleeting hype.
+          </p>
+          <p class="about-paragraph">
+            Outside of structured engineering, I routinely participate in competitive programming on Codeforces, implement machine learning algorithms in Python, and investigate decentralized consensus mechanisms.
+          </p>
+        </div>
+
+        <!-- Right: Technical Pillars -->
+        <div class="about-technical-pillars reveal-entry" style="transition-delay: 0.1s;">
+          <div class="technical-pillar-card">
+            <span class="pillar-index">PILLAR 01</span>
+            <h3 class="pillar-name">System Architecture</h3>
+            <p class="pillar-detail">Constructing resilient relational schemas, indexing strategies, and transactional triggers for concurrent web platforms.</p>
+          </div>
+
+          <div class="technical-pillar-card">
+            <span class="pillar-index">PILLAR 02</span>
+            <h3 class="pillar-name">Algorithmic Depth</h3>
+            <p class="pillar-detail">Deep appreciation for data structures, dynamic programming, graph traversals, and rigorous algorithmic efficiency.</p>
+          </div>
+
+          <div class="technical-pillar-card">
+            <span class="pillar-index">PILLAR 03</span>
+            <h3 class="pillar-name">Decentralized Trust</h3>
+            <p class="pillar-detail">Building transparent, immutable smart contracts that replace opaque intermediaries with cryptographic verification.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 5. TECHNICAL ARSENAL — CLASSIFIED MATRIX ─────────────────────────── -->
+  <section id="arsenal" class="editorial-section">
+    <div class="site-wrapper">
+      
+      <div class="section-label-bar">
+        <span class="section-index">03 / TECHNICAL ARSENAL</span>
+        <span class="section-caption">LANGUAGES, FRAMEWORKS &amp; INFRASTRUCTURE</span>
+      </div>
+
+      <div class="arsenal-matrix-grid reveal-entry">
+        
+        <!-- Cell 01: Languages -->
+        <div class="arsenal-category-cell">
+          <span class="category-cell-header">01 — LANGUAGES</span>
+          <div class="arsenal-item-list">
+            <div class="arsenal-item-row"><span>Python</span> <span class="tag-context">ML &amp; Scripting</span></div>
+            <div class="arsenal-item-row"><span>C / C++</span> <span class="tag-context">Algorithms &amp; DSA</span></div>
+            <div class="arsenal-item-row"><span>Java</span> <span class="tag-context">OOP &amp; Systems</span></div>
+            <div class="arsenal-item-row"><span>JavaScript (ES6+)</span> <span class="tag-context">Full-Stack Web</span></div>
+            <div class="arsenal-item-row"><span>PHP</span> <span class="tag-context">Backend &amp; RDBMS</span></div>
+            <div class="arsenal-item-row"><span>Solidity</span> <span class="tag-context">Smart Contracts</span></div>
+          </div>
+        </div>
+
+        <!-- Cell 02: Web & Backend -->
+        <div class="arsenal-category-cell">
+          <span class="category-cell-header">02 — WEB &amp; RUNTIME</span>
+          <div class="arsenal-item-list">
+            <div class="arsenal-item-row"><span>React</span> <span class="tag-context">Frontend UI</span></div>
+            <div class="arsenal-item-row"><span>Node.js / Express</span> <span class="tag-context">RESTful APIs</span></div>
+            <div class="arsenal-item-row"><span>HTML5 / Semantic</span> <span class="tag-context">Standards</span></div>
+            <div class="arsenal-item-row"><span>CSS3 / Grid &amp; Flex</span> <span class="tag-context">Responsive</span></div>
+            <div class="arsenal-item-row"><span>Tailwind CSS</span> <span class="tag-context">Utility Systems</span></div>
+          </div>
+        </div>
+
+        <!-- Cell 03: Databases & Storage -->
+        <div class="arsenal-category-cell">
+          <span class="category-cell-header">03 — DATABASES</span>
+          <div class="arsenal-item-list">
+            <div class="arsenal-item-row"><span>MySQL (InnoDB)</span> <span class="tag-context">ACID &amp; Triggers</span></div>
+            <div class="arsenal-item-row"><span>MongoDB</span> <span class="tag-context">NoSQL Documents</span></div>
+            <div class="arsenal-item-row"><span>Firebase Firestore</span> <span class="tag-context">Realtime Cloud</span></div>
+            <div class="arsenal-item-row"><span>Relational Design</span> <span class="tag-context">Normalization</span></div>
+          </div>
+        </div>
+
+        <!-- Cell 04: Tooling & Disciplines -->
+        <div class="arsenal-category-cell">
+          <span class="category-cell-header">04 — TOOLS &amp; DISCIPLINE</span>
+          <div class="arsenal-item-list">
+            <div class="arsenal-item-row"><span>Git &amp; GitHub</span> <span class="tag-context">Version Control</span></div>
+            <div class="arsenal-item-row"><span>Linux / Bash</span> <span class="tag-context">CLI &amp; OS</span></div>
+            <div class="arsenal-item-row"><span>Docker</span> <span class="tag-context">Containers</span></div>
+            <div class="arsenal-item-row"><span>Postman</span> <span class="tag-context">API Testing</span></div>
+            <div class="arsenal-item-row"><span>Codeforces / CP</span> <span class="tag-context">Problem Solving</span></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 6. EDUCATION & CREDENTIALS RECORD ─────────────────────────────────── -->
+  <section id="education" class="editorial-section">
+    <div class="site-wrapper">
+      
+      <div class="section-label-bar">
+        <span class="section-index">04 / BACKGROUND</span>
+        <span class="section-caption">ACADEMIC CREDENTIALS</span>
+      </div>
+
+      <div class="education-record-list reveal-entry">
+        
+        <div class="education-row">
+          <div class="education-period-cell">2022 — PRESENT</div>
+          <div class="education-degree-cell">
+            <h3 class="degree-title">BSc in Computer Science &amp; Engineering</h3>
+            <p class="institution-name">United International University (UIU) · Dhaka, Bangladesh</p>
+          </div>
+          <div class="education-summary-cell">
+            Core focus: Data Structures, Algorithms, Operating Systems, Database Management Systems, Computer Networks, Software Engineering, Object-Oriented Programming.
+          </div>
+        </div>
+
+        <div class="education-row">
+          <div class="education-period-cell">2018 — 2021</div>
+          <div class="education-degree-cell">
+            <h3 class="degree-title">Higher Secondary Certificate (HSC) — Science</h3>
+            <p class="institution-name">Milestone College · Dhaka, Bangladesh</p>
+          </div>
+          <div class="education-summary-cell">
+            Concentration in Higher Mathematics, Physics, Chemistry, and Information Technology.
+          </div>
+        </div>
+
+        <div class="education-row">
+          <div class="education-period-cell">GRADUATED 2018</div>
+          <div class="education-degree-cell">
+            <h3 class="degree-title">Secondary School Certificate (SSC) — Science</h3>
+            <p class="institution-name">Adamjee Cantonment Public School · Dhaka, Bangladesh</p>
+          </div>
+          <div class="education-summary-cell">
+            Graduated with Distinction in General Science &amp; Mathematics.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 7. CONTACT & DIRECT DIALOGUE ─────────────────────────────────────── -->
+  <section id="contact" class="editorial-section">
+    <div class="site-wrapper">
+      
+      <div class="section-label-bar">
+        <span class="section-index">05 / DIRECT DIALOGUE</span>
+        <span class="section-caption">INQUIRIES &amp; ENGAGEMENT</span>
+      </div>
+
+      <div class="contact-editorial-grid">
+        
+        <!-- Left: Inquiries Text & Direct Cards -->
+        <div class="contact-left-col reveal-entry">
+          <h2 class="contact-headline">
+            Let's discuss software engineering roles, technical collaboration, or project scope.
+          </h2>
+          <p class="contact-description">
+            I am actively open to software engineering opportunities, internships, and technical research projects. Feel free to reach out directly via email or the communication form.
+          </p>
+
+          <div class="direct-channel-list">
+            <div class="channel-card">
+              <div>
+                <div class="channel-label">Direct Email</div>
+                <div class="channel-value">rajee0585@gmail.com</div>
+              </div>
+              <button class="btn-editorial btn-outline" style="padding:0.4rem 0.9rem;" data-copy="rajee0585@gmail.com">Copy</button>
+            </div>
+
+            <div class="channel-card">
+              <div>
+                <div class="channel-label">GitHub</div>
+                <div class="channel-value">github.com/rajee99</div>
+              </div>
+              <a href="https://github.com/rajee99" target="_blank" rel="noopener" class="editorial-text-link">
+                <span>Explore</span> <span class="arrow-glyph">↗</span>
+              </a>
+            </div>
+
+            <div class="channel-card">
+              <div>
+                <div class="channel-label">LinkedIn</div>
+                <div class="channel-value">linkedin.com/in/al-rajee05</div>
+              </div>
+              <a href="https://linkedin.com/in/al-rajee05" target="_blank" rel="noopener" class="editorial-text-link">
+                <span>Connect</span> <span class="arrow-glyph">↗</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <form class="contact-form reveal" id="contact-form" style="transition-delay:0.1s;">
-          <div class="form-group">
-            <label for="form-name">Your Name</label>
-            <input type="text" id="form-name" name="name" class="form-control" placeholder="e.g. Alex Smith" required />
-          </div>
+        <!-- Right: Communication Form -->
+        <div class="contact-form-col reveal-entry" style="transition-delay: 0.1s;">
+          <form id="editorial-contact-form">
+            <div class="form-field-group">
+              <label for="contact-name">01 / Your Name</label>
+              <input type="text" id="contact-name" name="name" class="editorial-input" placeholder="e.g. Eleanor Vance" required />
+            </div>
 
-          <div class="form-group">
-            <label for="form-email">Your Email</label>
-            <input type="email" id="form-email" name="email" class="form-control" placeholder="alex@company.com" required />
-          </div>
+            <div class="form-field-group">
+              <label for="contact-email">02 / Your Email</label>
+              <input type="email" id="contact-email" name="email" class="editorial-input" placeholder="eleanor@domain.com" required />
+            </div>
 
-          <div class="form-group">
-            <label for="form-message">Message</label>
-            <textarea id="form-message" name="message" class="form-control" placeholder="Share project scope, opportunities, or inquiries..." required></textarea>
-          </div>
+            <div class="form-field-group">
+              <label for="contact-msg">03 / Message &amp; Scope</label>
+              <textarea id="contact-msg" name="message" class="editorial-input" placeholder="Describe the role, inquiry, or engineering collaboration..." required></textarea>
+            </div>
 
-          <div id="form-feedback" class="form-feedback"></div>
+            <div id="contact-status" class="form-status-message"></div>
 
-          <button type="submit" class="btn btn-primary" id="form-submit-btn" style="width:100%;">
-            Send Message
-          </button>
-        </form>
+            <button type="submit" id="contact-submit-btn" class="btn-editorial btn-solid" style="width:100%;">
+              <span>TRANSMIT MESSAGE</span>
+              <span>→</span>
+            </button>
+          </form>
+        </div>
+
       </div>
+
     </div>
   </section>
 
-  <!-- ── FOOTER ───────────────────────────────────────────── -->
+  <!-- ── 8. GLOBAL FOOTER ────────────────────────────────────────────────── -->
   <footer id="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-left">
-          <span class="footer-brand">&lt;Rajee/&gt;</span>
-          <p class="footer-copy">&copy; <span id="current-year">2026</span> Abdullah Al Rajee. Built with pure HTML, CSS, and vanilla JS.</p>
+    <div class="site-wrapper">
+      <div class="footer-inner-grid">
+        <div class="footer-brand-lockup">
+          <span class="footer-logo-title">ABDULLAH AL RAJEE</span>
+          <p class="footer-copy-text">&copy; <span id="current-year">2026</span> Abdullah Al Rajee · Designed &amp; engineered with precision.</p>
         </div>
 
-        <nav class="footer-nav" aria-label="Footer Navigation">
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#education">Education</a>
-          <a href="blog.html">Blog</a>
-          <a href="admin.html">Admin</a>
-          <a href="#contact">Contact</a>
+        <nav class="footer-links-cluster" aria-label="Footer Navigation">
+          <a href="#hero" class="footer-link-item">Top ↑</a>
+          <a href="#works" class="footer-link-item">Selected Work</a>
+          <a href="#about" class="footer-link-item">About</a>
+          <a href="#arsenal" class="footer-link-item">Arsenal</a>
+          <a href="#education" class="footer-link-item">Background</a>
+          <a href="blog.html" class="footer-link-item">Journal</a>
+          <a href="admin.html" class="footer-link-item">Admin</a>
+          <a href="#contact" class="footer-link-item">Contact</a>
         </nav>
       </div>
     </div>
   </footer>
 
-  <!-- ── TOAST NOTIFICATION ───────────────────────────────── -->
-  <div id="toast">Copied to clipboard</div>
+  <!-- ── 9. TOAST NOTIFICATION ───────────────────────────────────────────── -->
+  <div id="toast-notification">Email copied to clipboard ✓</div>
 
-  <!-- ── BACK TO TOP BUTTON ───────────────────────────────── -->
-  <button id="back-top" aria-label="Back to top" title="Back to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="18 15 12 9 6 15"></polyline>
-    </svg>
-  </button>
-
+  <!-- ── 10. JAVASCRIPT ENGINE ───────────────────────────────────────────── -->
   <script src="script.js"></script>
 </body>
 </html>
